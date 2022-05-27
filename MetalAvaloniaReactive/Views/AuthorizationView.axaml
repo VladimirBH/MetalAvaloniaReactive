@@ -9,11 +9,15 @@
         <TextBlock Classes="Title" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">Авторизация</TextBlock>
         <Grid Grid.Column="1" Grid.Row="1" ShowGridLines="True" RowDefinitions="1*, 1*, 1*, 1*">
             <TextBlock Classes="Authorization" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" >Логин:</TextBlock>
-            <TextBox Name="TextBoxLogin" Grid.Row="1" AcceptsReturn="False" Width="200" HorizontalAlignment="Stretch" Watermark="логин"/>
+            <TextBox Grid.Row="1" AcceptsReturn="False" Width="200" HorizontalAlignment="Stretch" Text="{Binding Login}"/>
             <TextBlock Classes="Authorization" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center">Пароль:</TextBlock>
-            <TextBox Name="TextBoxPassword" Grid.Row="3" AcceptsReturn="False" PasswordChar="*" Width="200" HorizontalAlignment="Stretch" Watermark="пароль"/>
+            <TextBox Grid.Row="3" AcceptsReturn="False" PasswordChar="*" Width="200" HorizontalAlignment="Stretch" Text="{Binding Password}"/>
         </Grid>
-        <Button Name="ButtonSubmit" Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" HorizontalContentAlignment="Center" Margin="30">Войти</Button>
+        <Button Name="ButtonSubmit" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" HorizontalContentAlignment="Center" Margin="30">Войти
+            <Button.Command>
+                <Binding Path="AuthorizationButtonClick" />
+            </Button.Command>
+        </Button>
 		
     </Grid>
 </UserControl>

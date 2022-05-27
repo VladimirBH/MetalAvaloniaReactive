@@ -64,7 +64,7 @@ public class UserImplementation
         }
     }
 
-    public static async Task<IEnumerable<User>> GetAllUsers()
+    public static async Task<List<User>> GetAllUsers()
     {
         if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
