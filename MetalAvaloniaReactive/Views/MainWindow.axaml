@@ -7,7 +7,8 @@
         x:Class="MetalAvaloniaReactive.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="MetalAvaloniaReactive"
-        Content="{Binding Content}">
+        Content="{Binding Content}"
+        Height="450" Width="800">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>

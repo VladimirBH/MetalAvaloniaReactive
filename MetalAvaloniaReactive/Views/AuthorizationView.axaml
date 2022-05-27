@@ -3,16 +3,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MetalAvaloniaReactive.Views.AuthorizationView">
-    <Grid Margin="15" RowDefinitions="1*, 1*, 1*" ColumnDefinitions="*">
-        <TextBlock Classes="Title" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">Авторизация</TextBlock>
-        <Grid Grid.Column="0" Grid.Row="1" RowDefinitions="1*,1*" ColumnDefinitions="1*,2.5*">
-            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center">Логин:</TextBlock>
-            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">Пароль:</TextBlock>
-            <TextBox Name="TextBoxLogin" Grid.Column="1" Grid.Row="0"  Width="200" HorizontalAlignment="Left"/>
-            <TextBox Name="TextBoxPassword" Grid.Column="1" Grid.Row="1" PasswordChar="*" Width="200" HorizontalAlignment="Left"/>
+             x:Class="MetalAvaloniaReactive.Views.AuthorizationView"
+             Height="450" Width="800">
+    <Grid Margin="15" ShowGridLines="True" RowDefinitions="5*, 6*, 5*" ColumnDefinitions="3*, 4*, 3*">
+        <TextBlock Classes="Title" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, 30">Авторизация</TextBlock>
+        <Grid Grid.Column="1" Grid.Row="1" ShowGridLines="True" RowDefinitions="1*, 1*, 1*, 1*">
+            <TextBlock Classes="Authorization" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" >Логин:</TextBlock>
+            <TextBox Name="TextBoxLogin" Grid.Row="1" AcceptsReturn="False" Width="200" HorizontalAlignment="Stretch" Watermark="логин"/>
+            <TextBlock Classes="Authorization" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center">Пароль:</TextBlock>
+            <TextBox Name="TextBoxPassword" Grid.Row="3" AcceptsReturn="False" PasswordChar="*" Width="200" HorizontalAlignment="Stretch" Watermark="пароль"/>
         </Grid>
-        <Button Name="ButtonSubmit" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" HorizontalContentAlignment="Center" Margin="25">Войти</Button>
+        <Button Name="ButtonSubmit" Grid.Row="2"  Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" HorizontalContentAlignment="Center" Margin="30">Войти</Button>
 		
     </Grid>
 </UserControl>
