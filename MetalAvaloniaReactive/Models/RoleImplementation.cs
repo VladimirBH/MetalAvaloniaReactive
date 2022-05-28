@@ -25,7 +25,8 @@ public class RoleImplementation
         var accessToken = PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken;
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var response = await httpClient.GetAsync("https://localhost:7019/api/Role/Get");
+        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/Role/Get");
+        var response = taskResponse.Result;
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();

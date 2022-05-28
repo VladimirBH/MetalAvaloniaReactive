@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using MetalAvaloniaReactive.ViewModels;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
@@ -17,7 +18,9 @@ namespace MetalAvaloniaReactive.ViewModels
             try
             {
                 LoadingApplication();
-                Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
+                var users = UserImplementation.GetAllUsers().Result;
+                Content = AdminView = new MainAdminViewModel(users, RoleImplementation.GetAllRoles().Result);
+                
                
             }
             catch (ApplicationException ex)
@@ -36,7 +39,7 @@ namespace MetalAvaloniaReactive.ViewModels
         public AuthorizationViewModel Authorization { get; }
         
         public MainAdminViewModel AdminView { get; }
-        private static void LoadingApplication()
+        private void LoadingApplication()
         {
             try
             {

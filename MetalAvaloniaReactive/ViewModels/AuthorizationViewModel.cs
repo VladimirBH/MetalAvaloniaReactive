@@ -3,7 +3,9 @@ using System.Reactive;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
+using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
+using MetalAvaloniaReactive.Models;
 using MetalAvaloniaReactive.ViewModels;
 using ReactiveUI;
 
@@ -20,13 +22,17 @@ public class AuthorizationViewModel : ViewModelBase
             x => x.Login, 
             y => y.Password,
             (x, y) => !string.IsNullOrWhiteSpace(x) && !string.IsNullOrWhiteSpace(y));
-        AuthorizationButtonClick = ReactiveCommand.Create(
-            () =>
+        AuthorizationButtonClick = ReactiveCommand.CreateFromTask(async () =>
             {
+                var tokenPair = UserImplementation.UserAuthorization(new DataAuth { Login = Login, Password = Password });
                 try
                 {
-                    Task<TokenPair> tokenPair = UserImplementation.UserAuthorization(new DataAuth { Login = Login, Password = Password });
+                    await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
+                    MainWindowViewModel mainWindowViewModel = new MainWindowViewModel
+                    {
+                        Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result)
+                    };
                 }
                 catch (AuthenticationException ex)
                 {

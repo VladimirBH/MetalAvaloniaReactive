@@ -20,7 +20,7 @@ public class UserImplementation
         var httpClient = new HttpClient();
         var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         options.Converters.Add(new JsonStringEnumConverter());
-        var response = await httpClient.PostAsJsonAsync("https://localhost:7019/api/User/signin", dataAuth, options);
+        var response = await httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/User/signin", dataAuth, options);
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();
@@ -44,7 +44,8 @@ public class UserImplementation
     {
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", refreshToken);
-        var response = await httpClient.GetAsync("https://localhost:7019/api/Token/RefreshAccess");
+        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/Token/RefreshAccess");
+        var response = taskResponse.Result;
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();
@@ -75,7 +76,8 @@ public class UserImplementation
         var accessToken = PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken;
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var response = await httpClient.GetAsync("https://localhost:7019/api/User/Get");
+        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/User/Get");
+        var response = taskResponse.Result;
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();
@@ -99,7 +101,7 @@ public class UserImplementation
     {
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
-        var response = await httpClient.GetAsync("https://localhost:7019/api/User/GetCurrentUserInfo");
+        var response = await httpClient.GetAsync(UrlAddress.MainUrl + "/User/GetCurrentUserInfo");
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();

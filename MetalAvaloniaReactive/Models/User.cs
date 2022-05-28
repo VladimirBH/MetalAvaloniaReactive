@@ -9,7 +9,7 @@ public class User : BaseEntity
     public string Surname { get; set; }
     
     
-    /*public string Patronymic { get; set; }
+    public string Patronymic { get; set; }
     
     public DateTime DateBirth { get; set; }
     
@@ -19,6 +19,6 @@ public class User : BaseEntity
     
     public int RoleId { get; set; }
     
-    public Role? Role { get; set; }*/
+    public Role? Role { get; set; }
 
 }

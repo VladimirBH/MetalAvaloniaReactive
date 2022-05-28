@@ -9,16 +9,20 @@
             <TabControl Grid.Row="0">
                 <TabItem Header="Пользователи" VerticalContentAlignment="Center">
                     <ItemsControl Items="{Binding Users}">
-                        <DataTemplate>
-                            <TextBox Text="{Binding Name}"/>
-                        </DataTemplate>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </TabItem>
                 <TabItem Header="Роли" VerticalContentAlignment="Center">
                     <ItemsControl Items="{Binding Roles}">
-                        <DataTemplate>
-                            <TextBox Text="{Binding RoleName}"/>
-                        </DataTemplate>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding RoleName}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </TabItem>
             </TabControl>
