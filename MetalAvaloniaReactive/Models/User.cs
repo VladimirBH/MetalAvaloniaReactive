@@ -1,4 +1,6 @@
 using System;
+using Newtonsoft.Json;
+using WebServer.Classes;
 
 namespace AvaloniaClientMVVM.Models;
 
@@ -8,6 +10,7 @@ public class User : BaseEntity
     
     public string Surname { get; set; }
     
+    public string PhoneNumber { get; set; }
     
     public string Patronymic { get; set; }
     

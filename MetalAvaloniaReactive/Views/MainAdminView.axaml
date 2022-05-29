@@ -11,7 +11,22 @@
                     <ItemsControl Items="{Binding Users}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
+                                <Border
+                                    BorderBrush="Black"
+                                    BorderThickness="2"
+                                    CornerRadius="3"
+                                    Padding="4">
+                                    <Grid RowDefinitions="1*, 1*, 1*" ColumnDefinitions="1*, 8*, 8*, 4*">
+                                        <TextBlock Grid.RowSpan="3" Text="{Binding Id}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Surname}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Login}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding DateBirth.Date}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PhoneNumber}"/>
+                                        <Button Grid.RowSpan="3" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="Удалить"/>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
