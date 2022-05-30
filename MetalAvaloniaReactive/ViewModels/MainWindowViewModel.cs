@@ -7,6 +7,7 @@ using MetalAvaloniaReactive.ViewModels;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
 using MetalAvaloniaReactive.Models;
+using MetalAvaloniaReactive.Views;
 using ReactiveUI;
 
 namespace MetalAvaloniaReactive.ViewModels
@@ -18,8 +19,8 @@ namespace MetalAvaloniaReactive.ViewModels
         {
             try
             {
-                PreparedLocalStorage.ClearLocalStorage();
-                PreparedLocalStorage.SaveLocalStorage();
+                /*PreparedLocalStorage.ClearLocalStorage();
+                PreparedLocalStorage.SaveLocalStorage();*/
                 LoadingApplication();
                 Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
 
@@ -27,7 +28,8 @@ namespace MetalAvaloniaReactive.ViewModels
             }
             catch (ApplicationException ex)
             {
-                Content = Authorization = new AuthorizationViewModel();
+                Content = Authorization = new AuthorizationViewModel(this);
+                
                 //Observable.Merge(Authorization.AuthorizationButtonClick.Select());
                 //Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
             }

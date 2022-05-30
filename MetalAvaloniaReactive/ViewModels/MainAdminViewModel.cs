@@ -13,5 +13,5 @@ public class MainAdminViewModel : ViewModelBase
     }
 
     public ObservableCollection<User> Users { get; }
-    public ObservableCollection<Role> Roles { get; }
+    public ObservableCollection<Role> Roles { get; } 
 }

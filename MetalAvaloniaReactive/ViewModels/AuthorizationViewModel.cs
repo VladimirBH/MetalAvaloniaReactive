@@ -7,6 +7,7 @@ using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using MetalAvaloniaReactive.ViewModels;
+using MetalAvaloniaReactive.Views;
 using ReactiveUI;
 
 namespace MetalAvaloniaReactive.ViewModels;
@@ -15,9 +16,11 @@ public class AuthorizationViewModel : ViewModelBase
 {
     private string login;
     private string password;
+    private MainWindowViewModel _mainWindowViewModel;
 
-    public AuthorizationViewModel()
+    public AuthorizationViewModel(MainWindowViewModel mainWindowViewModel)
     {
+        _mainWindowViewModel = mainWindowViewModel;
         var okEnabled = this.WhenAnyValue(
             x => x.Login, 
             y => y.Password,
@@ -29,10 +32,12 @@ public class AuthorizationViewModel : ViewModelBase
                 {
                     await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
-                    MainWindowViewModel mainWindowViewModel = new MainWindowViewModel
+                    _mainWindowViewModel.Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result,
+                        RoleImplementation.GetAllRoles().Result);
+                    /*MainWindowViewModel mainWindowViewModel = new MainWindowViewModel
                     {
                         Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result)
-                    };
+                    };*/
                 }
                 catch (AuthenticationException ex)
                 {
@@ -40,12 +45,12 @@ public class AuthorizationViewModel : ViewModelBase
                         ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
                     messageBox.Show();
                 }
-                /*catch (Exception ex)
+                catch (Exception ex)
                 {
                     var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
                         "Произошла ошибка\t", ButtonEnum.Ok, Icon.Error);
                     messageBox.Show();
-                }*/
+                }
             }, okEnabled
         );
     }

@@ -2,46 +2,85 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:conv="using:MetalAvaloniaReactive.Models" 
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MetalAvaloniaReactive.Views.MainAdminView">
-    <StackPanel>
-        <Grid RowDefinitions="6*, 1*">
-            <TabControl Grid.Row="0">
-                <TabItem Header="Пользователи" VerticalContentAlignment="Center">
-                    <ItemsControl Items="{Binding Users}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border
-                                    BorderBrush="Black"
-                                    BorderThickness="1,1,2,2"
-                                    CornerRadius="10"
-                                    Padding="4">
-                                    <Grid RowDefinitions="1*, 1*, 1*" ColumnDefinitions="1*, 8*, 8*, 4*">
-                                        <TextBlock Grid.RowSpan="3" Text="{Binding Id}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Grid RowDefinitions="6*, 1*" ColumnDefinitions="3*, 1*">
+        <TabControl Grid.Row="0" Grid.ColumnSpan="2">
+            <TabItem Header="Пользователи" VerticalContentAlignment="Center">
+                <ItemsControl Items="{Binding Users}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                BorderBrush="Black"
+                                BorderThickness="1,1,2,2"
+                                CornerRadius="10">
+                                <Grid RowDefinitions="1*, 1*, 1*" ColumnDefinitions="1*, 8*, 8*, 4*, 4*">
+                                    <TextBlock Grid.RowSpan="3" Text="{Binding Id}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <!--<TextBlock Grid.RowSpan="3" Grid.Column="1">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1} {2}">
+                                                <Binding Path="Surname" />
+                                                <Binding Path="Name" />
+                                                <Binding Path="Patronymic" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>-->
+                                    <Grid Grid.RowSpan="3" Grid.Column="1" RowDefinitions="1*, 1*, 1*" ColumnDefinitions="1*, 2*">
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Фамилия:"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Имя:"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Отчество:"/>
                                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Surname}"/>
                                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
                                         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
-                                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Login}"/>
-                                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding DateBirth.Date}"/>
-                                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PhoneNumber}"/>
-                                        <Button Grid.RowSpan="3" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="Удалить"/>
                                     </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </TabItem>
-                <TabItem Header="Роли" VerticalContentAlignment="Center">
-                    <ItemsControl Items="{Binding Roles}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RoleName}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </TabItem>
-            </TabControl>
-        </Grid>
-
-    </StackPanel>
+                                    <Grid Grid.RowSpan="3" Grid.Column="2" RowDefinitions="1*, 1*, 1*" ColumnDefinitions="1*, 2*">
+                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Логин:"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Дата рождения:"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Телефон:"/>
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Login}"/>
+                                        <TextBlock Grid.Row="1" Grid.Column="1">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                                                    <Binding Path="DateBirth.Day" />
+                                                    <Binding Path="DateBirth.Month" />
+                                                    <Binding Path="DateBirth.Year" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PhoneNumber}"/>
+                                        <!--<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>-->
+                                    </Grid>
+                                    <!--<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Login}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="2">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                                                <Binding Path="DateBirth.Day" />
+                                                <Binding Path="DateBirth.Month" />
+                                                <Binding Path="DateBirth.Year" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PhoneNumber}"/>-->
+                                    <Button Grid.RowSpan="3" Grid.Column="3" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="Изменить"/>
+                                    <Button Grid.RowSpan="3" Grid.Column="4" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Content="Удалить"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </TabItem>
+            <TabItem Header="Роли" VerticalContentAlignment="Center">
+                <ItemsControl Items="{Binding Roles}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RoleName}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </TabItem>
+        </TabControl>
+        <Button Grid.Row="1" Grid.Column="1" Content="Выйти" HorizontalAlignment="Stretch" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+    </Grid>
 </UserControl>
