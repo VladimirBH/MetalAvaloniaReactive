@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MetalAvaloniaReactive.ViewModels;
@@ -17,15 +18,18 @@ namespace MetalAvaloniaReactive.ViewModels
         {
             try
             {
+                PreparedLocalStorage.ClearLocalStorage();
+                PreparedLocalStorage.SaveLocalStorage();
                 LoadingApplication();
-                var users = UserImplementation.GetAllUsers().Result;
-                Content = AdminView = new MainAdminViewModel(users, RoleImplementation.GetAllRoles().Result);
-                
+                Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
+
                
             }
             catch (ApplicationException ex)
             {
                 Content = Authorization = new AuthorizationViewModel();
+                //Observable.Merge(Authorization.AuthorizationButtonClick.Select());
+                //Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
             }
 
         }

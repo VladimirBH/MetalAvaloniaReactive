@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="MetalAvaloniaReactive.Views.AddUserView">
+    <Grid ShowGridLines="True" RowDefinitions="1*, 6*">
+        <TextBlock Classes="Title" Grid.Row="0" Text="Добавление пользователя"/>
+        <Grid Grid.Row="1" ShowGridLines="True" RowDefinitions="1*, 1*, 1*, 1*, 1*, 1*, 1*, 1*" ColumnDefinitions="1*, 4*">
+            <TextBlock Classes="ForAdd" Grid.Row="0" Grid.Column="0" Text="Фамилия:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="1" Grid.Column="0" Text="Имя:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="2" Grid.Column="0" Text="Отчество:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="3" Grid.Column="0" Text="Дата рождения:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="4" Grid.Column="0" Text="Номер телефона:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="5" Grid.Column="0" Text="Роль:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="6" Grid.Column="0" Text="Логин:"/>
+            <TextBlock Classes="ForAdd" Grid.Row="7" Grid.Column="0" Text="Пароль:"/>
+            
+            <TextBox Classes="ForAdd" Grid.Row="0" Grid.Column="1" Text="Фамилия"/>
+            <TextBox Classes="ForAdd" Grid.Row="1" Grid.Column="1" Text="Имя"/>
+            <TextBox Classes="ForAdd" Grid.Row="2" Grid.Column="1" Text="Отчество"/>
+            <DatePicker Classes="ForAdd" Grid.Row="3" Grid.Column="1" FontSize="18" />
+            <TextBox Classes="ForAdd" Grid.Row="4" Grid.Column="1" MaxLength="11" Text="Номер телефона"/>
+            <ComboBox Classes="ForAdd" Grid.Row="5" Grid.Column="1"/>
+            <TextBox Classes="ForAdd" Grid.Row="6" Grid.Column="1" Text="Логин"/>
+            <TextBox Classes="ForAdd" Grid.Row="7" Grid.Column="1" Text="Пароль"/>
+        </Grid>
+        
+    </Grid>
+</UserControl>

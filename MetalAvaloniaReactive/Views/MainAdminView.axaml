@@ -13,8 +13,8 @@
                             <DataTemplate>
                                 <Border
                                     BorderBrush="Black"
-                                    BorderThickness="2"
-                                    CornerRadius="3"
+                                    BorderThickness="1,1,2,2"
+                                    CornerRadius="10"
                                     Padding="4">
                                     <Grid RowDefinitions="1*, 1*, 1*" ColumnDefinitions="1*, 8*, 8*, 4*">
                                         <TextBlock Grid.RowSpan="3" Text="{Binding Id}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

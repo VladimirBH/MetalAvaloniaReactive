@@ -40,12 +40,12 @@ public class AuthorizationViewModel : ViewModelBase
                         ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
                     messageBox.Show();
                 }
-                catch (Exception ex)
+                /*catch (Exception ex)
                 {
                     var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
                         "Произошла ошибка\t", ButtonEnum.Ok, Icon.Error);
                     messageBox.Show();
-                }
+                }*/
             }, okEnabled
         );
     }
