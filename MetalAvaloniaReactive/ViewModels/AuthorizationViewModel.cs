@@ -33,7 +33,7 @@ public class AuthorizationViewModel : ViewModelBase
                     await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
                     _mainWindowViewModel.Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result,
-                        RoleImplementation.GetAllRoles().Result);
+                        RoleImplementation.GetAllRoles().Result, mainWindowViewModel);
                     /*MainWindowViewModel mainWindowViewModel = new MainWindowViewModel
                     {
                         Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result)

@@ -55,15 +55,34 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
+    <Style Selector="TextBlock.TextBlockNamePropetry">
+        <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
     <!-- ################################### -->
     <!-- ########## Button Style ########### -->
     <!-- ################################### -->
     <Style Selector="Button">
         <Setter Property="Background" Value="WhiteSmoke"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="#000000"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="FontSize" Value="18"/>
+        <Setter Property="CornerRadius" Value="5"/>
+    </Style>
+    <Style Selector="Button.ListView">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="#FFF"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Padding" Value="20, 5"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.Update">
+        <Setter Property="Background" Value="#6abeec"/>
+    </Style>
+    <Style Selector="Button.Delete">
+        <Setter Property="Background" Value="#ec5356"/>
     </Style>
     <Style Selector="Button.List">
         <Setter Property="FontSize" Value="16"/>
@@ -76,4 +95,26 @@
     <!-- ################################### -->
     <!-- ######### ComboBox Style ########## -->
     <!-- ################################### -->
+    <Style Selector="ComboBox"></Style>
+    <!-- ################################### -->
+    <!-- ######### TabItem Style ########### -->
+    <!-- ################################### -->   
+    <Style Selector="TabItem">
+    </Style>
+    <!-- ################################### -->
+    <!-- ########### Grid Style ############ -->
+    <!-- ################################### -->  
+    <Style Selector="Grid.ListView">
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+    <!-- ################################### -->
+    <!-- ########## Border Style ########### -->
+    <!-- ################################### -->
+    <Style Selector="Border.ListView">
+        <Setter Property="Background" Value="#e8f5fd"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
 </Styles>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using MetalAvaloniaReactive.ViewModels;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
@@ -17,12 +18,13 @@ namespace MetalAvaloniaReactive.ViewModels
         private ViewModelBase content;
         public MainWindowViewModel()
         {
+
             try
             {
                 /*PreparedLocalStorage.ClearLocalStorage();
                 PreparedLocalStorage.SaveLocalStorage();*/
                 LoadingApplication();
-                Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
+                Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result, this);
 
                
             }
@@ -45,6 +47,8 @@ namespace MetalAvaloniaReactive.ViewModels
         public AuthorizationViewModel Authorization { get; }
         
         public MainAdminViewModel AdminView { get; }
+        
+
         private void LoadingApplication()
         {
             try
