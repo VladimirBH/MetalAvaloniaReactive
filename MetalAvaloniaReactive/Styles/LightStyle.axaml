@@ -32,9 +32,8 @@
     </Style>
     <Style Selector="TextBox.ForAdd">
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="Margin" Value="15, 0, 0, 0"/>
-        <Setter Property="Width" Value="300"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="15, 0"/>
     </Style>
     <!-- ################################### -->
     <!-- ######### TextBlock Style ######### -->
@@ -91,11 +90,18 @@
     <!-- ######## DatePicker Style ######### -->
     <!-- ################################### -->
     <Style Selector="DatePicker.ForAdd">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="15, 0"/>
     </Style>
     <!-- ################################### -->
     <!-- ######### ComboBox Style ########## -->
     <!-- ################################### -->
-    <Style Selector="ComboBox"></Style>
+    <Style Selector="ComboBox.ForAdd">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="15, 0"/>
+    </Style>
     <!-- ################################### -->
     <!-- ######### TabItem Style ########### -->
     <!-- ################################### -->   

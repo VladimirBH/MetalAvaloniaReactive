@@ -4,6 +4,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
 using ReactiveUI;
 
@@ -18,20 +19,26 @@ public class MainAdminViewModel : ViewModelBase
         Roles = new ObservableCollection<Role>(roles);
         //AuthorizationButtonClick = ReactiveCommand.Create<int>(OpenAddUserWindow);
         _mainWindowViewModel = mainWindowViewModel;
-        ShowDialog = new Interaction<AddUserViewModel, MainAdminViewModel?>();
-        UpdateRoleClick = ReactiveCommand.CreateFromTask<int>(OpenAddUserWindow);
-    }
+        ExitFromApplication = ReactiveCommand.Create(() =>
+        {
+            PreparedLocalStorage.ClearLocalStorage();
+            PreparedLocalStorage.SaveLocalStorage();
+            _mainWindowViewModel.Content = new AuthorizationViewModel(_mainWindowViewModel);
+        });
 
-        
-    public Interaction<AddUserViewModel, MainAdminViewModel?> ShowDialog { get; }
-    public ICommand UpdateRoleClick { get; }
+        UpdateUserClick = ReactiveCommand.Create<int>(OpenUpdateUserView);
+    }
+    
     public ObservableCollection<User> Users { get; }
     public ObservableCollection<Role> Roles { get; }
 
-    async Task OpenAddUserWindow(int idUser)
+    
+    public ReactiveCommand<Unit, Unit> ExitFromApplication { get; }
+    
+    public ReactiveCommand<int, Unit> UpdateUserClick { get; }
+    void OpenUpdateUserView(int id)
     {
-        var addUser = new AddUserViewModel(_mainWindowViewModel);
-        var result = await ShowDialog.Handle(addUser);
-        
+        _mainWindowViewModel.Content = new AddUserViewModel(_mainWindowViewModel, id);
     }
+    
 }

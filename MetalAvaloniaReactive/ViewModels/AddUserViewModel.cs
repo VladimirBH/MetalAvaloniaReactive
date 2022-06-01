@@ -4,10 +4,10 @@ using ReactiveUI;
 
 namespace MetalAvaloniaReactive.ViewModels;
 
-public class AddUserViewModel
+public class AddUserViewModel : ViewModelBase
 {
     private MainWindowViewModel _mainWindowViewModel;
-    public AddUserViewModel(MainWindowViewModel mainWindowViewModel)
+    public AddUserViewModel(MainWindowViewModel mainWindowViewModel, int idUser)
     {
         _mainWindowViewModel = mainWindowViewModel;
 

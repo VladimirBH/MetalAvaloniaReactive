@@ -24,9 +24,17 @@ namespace MetalAvaloniaReactive.ViewModels
                 /*PreparedLocalStorage.ClearLocalStorage();
                 PreparedLocalStorage.SaveLocalStorage();*/
                 LoadingApplication();
-                Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result, this);
+                if (KeepRoleId.RoleId == 1)
+                {
+                    Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result, this);
+                }
+                else
+                {
+                    Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result, this);
+                }
 
-               
+
+
             }
             catch (ApplicationException ex)
             {
