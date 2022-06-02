@@ -8,7 +8,8 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="MetalAvaloniaReactive"
         Content="{Binding Content}"
-        Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Width="900" Height="500">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>

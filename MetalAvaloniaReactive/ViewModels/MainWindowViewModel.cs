@@ -21,16 +21,14 @@ namespace MetalAvaloniaReactive.ViewModels
 
             try
             {
-                /*PreparedLocalStorage.ClearLocalStorage();
-                PreparedLocalStorage.SaveLocalStorage();*/
                 LoadingApplication();
                 if (KeepRoleId.RoleId == 1)
                 {
-                    Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result, this);
+                    Content = AdminView = new MainAdminViewModel(this);
                 }
                 else
                 {
-                    Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result, this);
+                    Content = AdminView = new MainAdminViewModel(this);
                 }
 
 

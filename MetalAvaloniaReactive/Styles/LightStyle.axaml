@@ -24,6 +24,7 @@
     <Style Selector="TextBox">
         <Setter Property="BorderBrush" Value="#000000"/>
         <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="Inherit"/>
         <!--<Setter Property="Height" Value="20"/>
         <Setter Property="Margin" Value="15, 0"/>-->
         <Setter Property="TextWrapping" Value="NoWrap"/>
@@ -61,7 +62,8 @@
     <!-- ########## Button Style ########### -->
     <!-- ################################### -->
     <Style Selector="Button">
-        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="FontFamily" Value="Inherit"/>
+        <Setter Property="Background" Value="#6abeec"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="#000000"/>
         <Setter Property="Margin" Value="10"/>
@@ -86,10 +88,16 @@
     <Style Selector="Button.List">
         <Setter Property="FontSize" Value="16"/>
     </Style>
+    <Style Selector="Button.Add">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Padding" Value="20, 5"/>
+        <Setter Property="Margin" Value="15, 0"/>
+    </Style>
     <!-- ################################### -->
     <!-- ######## DatePicker Style ######### -->
     <!-- ################################### -->
     <Style Selector="DatePicker.ForAdd">
+        <Setter Property="FontFamily" Value="Inherit"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="15, 0"/>
@@ -98,9 +106,12 @@
     <!-- ######### ComboBox Style ########## -->
     <!-- ################################### -->
     <Style Selector="ComboBox.ForAdd">
+        <Setter Property="FontFamily" Value="Inherit"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="15, 0"/>
+        <Setter Property="FontSize" Value="18"/>
+        
     </Style>
     <!-- ################################### -->
     <!-- ######### TabItem Style ########### -->
@@ -122,5 +133,14 @@
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Padding" Value="10"/>
         <Setter Property="Margin" Value="5"/>
+    </Style>
+    <!-- ################################### -->
+    <!-- #### CalendarDatePicker Style ##### -->
+    <!-- ################################### -->
+    <Style Selector="CalendarDatePicker.ForAdd">
+        <Setter Property="FontFamily" Value="Inherit"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="15, 0"/>
     </Style>
 </Styles>

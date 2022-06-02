@@ -20,7 +20,8 @@ public class UserImplementation
         var httpClient = new HttpClient();
         var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         options.Converters.Add(new JsonStringEnumConverter());
-        var response = await httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/User/signin", dataAuth, options);
+        var taskResponse = httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/User/signin", dataAuth, options);
+        var response = taskResponse.Result;
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();
@@ -99,9 +100,16 @@ public class UserImplementation
 
     public static async Task<User> GetCurrentUserInfo()
     {
+        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        {
+            TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
+            PreparedLocalStorage.SaveLocalStorage();
+        }
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
-        var response = await httpClient.GetAsync(UrlAddress.MainUrl + "/User/GetCurrentUserInfo");
+        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/User/GetCurrentUserInfo");
+        var response = taskResponse.Result;
         if (response.StatusCode == HttpStatusCode.OK)
         {
             var text = await response.Content.ReadAsStringAsync();
@@ -120,7 +128,57 @@ public class UserImplementation
             throw new AuthenticationException("Ошибка доступа");
         }
     }
-    
-    
+
+    public static async Task<User> GetUserById(int id)
+    {
+        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        {
+            TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
+            PreparedLocalStorage.SaveLocalStorage();
+        }
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
+        var urlString = UrlAddress.MainUrl + $"/user/get/{id}";
+        var taskResponse = httpClient.GetAsync(urlString);
+        var response = taskResponse.Result;
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var text = await response.Content.ReadAsStringAsync();
+            User user = JsonSerializer.Deserialize<User>(text);
+            if (user != null)
+            {
+                return user;
+            }
+            else
+            {
+                throw new JsonException("Произошла ошибка");
+            }
+        }
+        else
+        {
+            throw new AuthenticationException("Ошибка доступа");
+        }
+    }
+
+    public static async Task AddUser(User user)
+    {
+        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        {
+            TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
+            PreparedLocalStorage.SaveLocalStorage();
+        }
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        options.Converters.Add(new JsonStringEnumConverter());
+        var taskResponse = httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/User/CreateUser", user, options);
+        var response = taskResponse.Result;
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            throw new AuthenticationException("Ошибка доступа");
+        }
+    }
 
 }

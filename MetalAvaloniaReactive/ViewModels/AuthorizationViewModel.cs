@@ -1,13 +1,8 @@
 using System;
 using System.Reactive;
 using System.Security.Authentication;
-using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
-using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
-using MetalAvaloniaReactive.Models;
-using MetalAvaloniaReactive.ViewModels;
-using MetalAvaloniaReactive.Views;
 using ReactiveUI;
 
 namespace MetalAvaloniaReactive.ViewModels;
@@ -32,12 +27,10 @@ public class AuthorizationViewModel : ViewModelBase
                 {
                     await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
-                    _mainWindowViewModel.Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result,
-                        RoleImplementation.GetAllRoles().Result, mainWindowViewModel);
-                    /*MainWindowViewModel mainWindowViewModel = new MainWindowViewModel
-                    {
-                        Content = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result)
-                    };*/
+                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех",
+                        "Вход выполнен успешно\t", ButtonEnum.Ok, Icon.Error);
+                    messageBox.Show();
+                    _mainWindowViewModel.Content = new MainAdminViewModel(mainWindowViewModel);
                 }
                 catch (AuthenticationException ex)
                 {
