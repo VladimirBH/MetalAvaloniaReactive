@@ -4,31 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MetalAvaloniaReactive.Views.AddUserView">
-    <Grid ShowGridLines="True" RowDefinitions="1*, 6*">
-        <TextBlock Classes="Title" Grid.Row="0" Text="{Binding TitleContent}"/>
-        <Grid Grid.Row="1" ShowGridLines="True" RowDefinitions="1*, 1*, 1*, 1*, 1*, 1*, 1*, 1*, 2*" ColumnDefinitions="3*, 4*, 4*">
-            <TextBlock Classes="ForAdd" Grid.Row="0" Grid.Column="0" Text="Фамилия:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="1" Grid.Column="0" Text="Имя:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="2" Grid.Column="0" Text="Отчество:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="3" Grid.Column="0" Text="Дата рождения:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="4" Grid.Column="0" Text="Номер телефона:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="5" Grid.Column="0" Text="Роль:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="6" Grid.Column="0" Text="Логин:"/>
-            <TextBlock Classes="ForAdd" Grid.Row="7" Grid.Column="0" Text="Пароль:"/>
-        
-            <TextBox Classes="ForAdd" Grid.Row="0" Grid.Column="1" Text="{Binding Surname}"/>
-            <TextBox Classes="ForAdd" Grid.Row="1" Grid.Column="1" Text="{Binding Name}"/>
-            <TextBox Classes="ForAdd" Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}"/>
-            <CalendarDatePicker Classes="ForAdd" Grid.Row="3" Grid.Column="1" SelectedDate="{Binding DateBirth}"/>
-            <TextBox Classes="ForAdd" Grid.Row="4" Grid.Column="1" MaxLength="11" Text="{Binding PhoneNumber}"/>
-            <ComboBox Classes="ForAdd" Grid.Row="5" Grid.Column="1" Items="{Binding RoleNames}"/>
-            <TextBox Classes="ForAdd" Grid.Row="6" Grid.Column="1" Text="{Binding Login}"/>
-            <TextBox Classes="ForAdd" Grid.Row="7" Grid.Column="1" PasswordChar="*" Text="{Binding Password}"/>
-            <Grid Grid.Row="8" Grid.Column="1" ColumnDefinitions="1*, 1*">
-                <Button Grid.Column="0" Classes="Add" Content="{Binding ContentForSubmitButton}" Command="{Binding ActionForSubmitButton}"/>
-                <Button Grid.Column="1" Classes="Add Delete" Content="Отмена" Command="{Binding CancelButtonClick}"/>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid RowDefinitions="1*, 7*">
+            <TextBlock Classes="Title" Grid.Row="0" Text="{Binding TitleContent}"/>
+            <Grid Grid.Row="1" RowDefinitions="3*, 3*, 3*, 3*, 3*, 3*, 3*, 3*, 4*" ColumnDefinitions="3*, 4*, 4*">
+                <TextBlock Classes="ForAdd" Grid.Row="0" Grid.Column="0" Text="Фамилия:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="1" Grid.Column="0" Text="Имя:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="2" Grid.Column="0" Text="Отчество:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="3" Grid.Column="0" Text="Дата рождения:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="4" Grid.Column="0" Text="Номер телефона:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="5" Grid.Column="0" Text="Роль:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="6" Grid.Column="0" Text="Логин:"/>
+                <TextBlock Classes="ForAdd" Grid.Row="7" Grid.Column="0" Text="Пароль:"/>
+            
+                <TextBox Classes="ForAdd" Grid.Row="0" Grid.Column="1" Text="{Binding Surname}" MaxLength="50"/>
+                <TextBox Classes="ForAdd" Grid.Row="1" Grid.Column="1" Text="{Binding Name}" MaxLength="50"/>
+                <TextBox Classes="ForAdd" Grid.Row="2" Grid.Column="1" Text="{Binding Patronymic}" MaxLength="50"/>
+                <CalendarDatePicker Classes="ForAdd" Grid.Row="3" Grid.Column="1" SelectedDate="{Binding DateBirth}"/>
+                <TextBox Classes="ForAdd" Grid.Row="4" Grid.Column="1" MaxLength="11" Text="{Binding PhoneNumber}" />
+                <ComboBox Classes="ForAdd" Grid.Row="5" Grid.Column="1" Items="{Binding Roles}" SelectedItem="{Binding SelectedRole}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding RoleName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBox Classes="ForAdd" Grid.Row="6" Grid.Column="1" Text="{Binding Login}" MaxLength="20"/>
+                <TextBox Classes="ForAdd" Grid.Row="7" Grid.Column="1" PasswordChar="*" Text="{Binding Password}"/>
+                <Grid Grid.Row="8" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                    <Button Grid.Column="0" Classes="Add" Content="{Binding ContentForSubmitButton}" Command="{Binding ActionForSubmitButton}"/>
+                    <Button Grid.Column="1" Classes="Add Delete" Content="Отмена" Command="{Binding CancelButtonClick}"/>
+                </Grid>
             </Grid>
+                                
         </Grid>
-                            
-    </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -102,8 +102,8 @@
                                             <TextBlock Grid.Row="1" Text="{Binding RoleName}"/>
                                         </Grid>
                                         <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding $parent[Window].DataContext.UpdateRoleClick}" CommandParameter="{Binding Id}" Content="Изменить"/>
-                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DeleteRoleClick}" CommandParameter="{Binding Id}" Content="Удалить"/>
+                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding DataContext.UpdateRoleClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
+                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DataContext.DeleteRoleClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
                                         </Grid>
                                     </Grid>
                                 </Border>
@@ -114,7 +114,7 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <Button Grid.Row="1" Content="Выйти" Padding="50, 5" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center">
+        <Button Grid.Row="1" Classes="Exit" Content="Выйти">
             <Button.Command>
                 <Binding Path="ExitFromApplication" />
             </Button.Command>

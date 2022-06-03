@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Security.Authentication;
-using System.Windows.Input;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
+using NodaTime.Extensions;
 using ReactiveUI;
 
 namespace MetalAvaloniaReactive.ViewModels;
@@ -23,9 +23,10 @@ public class AddUserViewModel : ViewModelBase
     private string _password;
     private DateTime _dateBirth;
     private int _roleId;
+    private Role _selectedRole;
+    private User _user;
 
-
-    private List<string> _roleNames;
+    private List<Role> _roles;
 
     public AddUserViewModel(MainWindowViewModel mainWindowViewModel, int idUser)
     {
@@ -36,65 +37,47 @@ public class AddUserViewModel : ViewModelBase
             password => password.Password,
             phoneNumber => phoneNumber.PhoneNumber,
             dateBirth => dateBirth.DateBirth,
-            (surname, name, login,password, phoneNumber,  dateBirth) => !string.IsNullOrWhiteSpace(surname) &&
+            selectedRole => selectedRole.SelectedRole,
+            (surname, name, login,password, phoneNumber,  dateBirth, selectedRole) => !string.IsNullOrWhiteSpace(surname) &&
                                                                         !string.IsNullOrWhiteSpace(name) &&
                                                                         !string.IsNullOrWhiteSpace(login) &&
                                                                         !string.IsNullOrWhiteSpace(password) &&
                                                                         !string.IsNullOrWhiteSpace(phoneNumber) &&
-                                                                        dateBirth < DateTime.Now.Date.AddYears(-18) &&
-                                                                        dateBirth > DateTime.Now.Date.AddYears(-100));
+                                                                        selectedRole != null &&
+                                                                        login.Length > 3 &&
+                                                                        password.Length > 8);
         _mainWindowViewModel = mainWindowViewModel;
         CancelButtonClick = ReactiveCommand.Create(CancellationOperation);
-        _roleNames = new List<string>();
-        foreach (Role role in RoleImplementation.GetAllRoles().Result)
-        {
-            _roleNames.Add(role.RoleName);
-        }
+        _roles = RoleImplementation.GetAllRoles().Result;
 
         if (idUser != -1)
         {
-            User user = UserImplementation.GetUserById(idUser).Result;
-            _surname = user.Surname;
-            _name = user.Name;
-            _patronymic = user.Patronymic;
-            _login = user.Login;
-            _password = user.Password;
-            _dateBirth = user.DateBirth;
-            _phoneNumber = user.PhoneNumber;
-            _roleId = user.RoleId;
-            ActionForSubmitButton = ReactiveCommand.Create(UpdateUser);
+             _user = UserImplementation.GetUserById(idUser).Result;
+            _surname = _user.Surname;
+            _name = _user.Name;
+            _patronymic = _user.Patronymic;
+            _login = _user.Login;
+            //_password = user.Password;
+            _dateBirth = _user.DateBirth;
+            _phoneNumber = _user.PhoneNumber;
+            _roleId = _user.RoleId;
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask(async () =>
+            {
+                UpdateUser();
+            });
             ContentForSubmitButton = "Изменить";
             TitleContent = "Изменение данных";
+            _selectedRole = Roles.FirstOrDefault(x => x.Id == _roleId);
         }
         else
         {
             ActionForSubmitButton = ReactiveCommand.CreateFromTask( async () =>
             {
-                User user = new User
-                {
-                    Id = 2,
-                    Surname = Surname,
-                    Name = Name,
-                    Patronymic = Patronymic,
-                    DateBirth = DateBirth,
-                    PhoneNumber = PhoneNumber,
-                    RoleId = 1,
-                    Login = Login,
-                    Password = Password
-                };
-                var task = UserImplementation.AddUser(user);
-                try
-                {
-                    await task;
-                }
-                catch (AuthenticationException ex)
-                {
-                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
-                    messageBox.Show();
-                }
+                AddUser();
             }, addEnabled);
             ContentForSubmitButton = "Добавить";
             TitleContent = "Добавление пользователя";
+            _selectedRole = null;
         }
     }
 
@@ -147,25 +130,80 @@ public class AddUserViewModel : ViewModelBase
     }
     
 
-    public List<string> RoleNames
+    public List<Role> Roles
     {
-        get => _roleNames;
-        set => this.RaiseAndSetIfChanged(ref _roleNames, value);
+        get => _roles;
+        set => this.RaiseAndSetIfChanged(ref _roles, value);
     }
     void CancellationOperation()
     {
         _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
     }
 
-    async void AddUser()
+    public Role SelectedRole
     {
-
-
-
+        get => _selectedRole;
+        set => this.RaiseAndSetIfChanged(ref _selectedRole, value);
     }
 
-    void UpdateUser()
+    async void AddUser()
     {
-        
+        User user = new User
+        {
+            Id = 2,
+            Surname = Surname,
+            Name = Name,
+            Patronymic = Patronymic,
+            DateBirth = DateBirth, 
+            PhoneNumber = PhoneNumber,
+            RoleId = SelectedRole.Id,
+            Login = Login,
+            Password = Password,
+            CreationDate = DateTime.Now.ToUniversalTime().ToInstant()
+        };
+        var task = UserImplementation.AddUser(user);
+        try
+        {
+            await task;
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Пользователь успешно создан\t", ButtonEnum.Ok, Icon.Info);
+            messageBox.Show();
+            CancellationOperation();
+        }
+        catch (AuthenticationException ex)
+        {
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            messageBox.Show();
+        }
+    }
+    
+    
+    async void UpdateUser()
+    {
+        User user = new User
+        {
+            Id = _user.Id,
+            Surname = Surname,
+            Name = Name,
+            Patronymic = Patronymic,
+            DateBirth = DateBirth, 
+            PhoneNumber = PhoneNumber,
+            RoleId = SelectedRole.Id,
+            Login = Login,
+            Password = Password,
+            CreationDate = DateTime.Now.ToUniversalTime().ToInstant()
+        };
+        var task = UserImplementation.UpdateUser(user);
+        try
+        {
+            await task;
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Данные успешно обновлены\t", ButtonEnum.Ok, Icon.Info);
+            messageBox.Show();
+            CancellationOperation();
+        }
+        catch (AuthenticationException ex)
+        {
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            messageBox.Show();
+        }
     }
 }

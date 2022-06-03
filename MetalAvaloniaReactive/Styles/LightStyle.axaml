@@ -66,9 +66,12 @@
         <Setter Property="Background" Value="#6abeec"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="BorderBrush" Value="#000000"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="#FFF"/>
         <Setter Property="Margin" Value="10"/>
         <Setter Property="FontSize" Value="18"/>
         <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
     <Style Selector="Button.ListView">
         <Setter Property="Margin" Value="5"/>
@@ -77,7 +80,6 @@
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="Padding" Value="20, 5"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
     <Style Selector="Button.Update">
         <Setter Property="Background" Value="#6abeec"/>
@@ -90,8 +92,13 @@
     </Style>
     <Style Selector="Button.Add">
         <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Padding" Value="20, 5"/>
+        <Setter Property="Width" Value="150"/>
         <Setter Property="Margin" Value="15, 0"/>
+    </Style>
+    <Style Selector="Button.Exit">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="Width" Value="150"/>
     </Style>
     <!-- ################################### -->
     <!-- ######## DatePicker Style ######### -->
@@ -100,7 +107,8 @@
         <Setter Property="FontFamily" Value="Inherit"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Margin" Value="15, 0"/>
+        <Setter Property="Margin" Value="15, 5"/>
+        <Setter Property="FontSize" Value="18"/>
     </Style>
     <!-- ################################### -->
     <!-- ######### ComboBox Style ########## -->
@@ -142,5 +150,6 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="15, 0"/>
+        <Setter Property="FontSize" Value="18"/>
     </Style>
 </Styles>

@@ -27,9 +27,6 @@ public class AuthorizationViewModel : ViewModelBase
                 {
                     await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
-                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех",
-                        "Вход выполнен успешно\t", ButtonEnum.Ok, Icon.Error);
-                    messageBox.Show();
                     _mainWindowViewModel.Content = new MainAdminViewModel(mainWindowViewModel);
                 }
                 catch (AuthenticationException ex)

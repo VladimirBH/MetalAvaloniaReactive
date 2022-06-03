@@ -177,8 +177,46 @@ public class UserImplementation
         var response = taskResponse.Result;
         if (response.StatusCode != HttpStatusCode.OK)
         {
-            throw new AuthenticationException("Ошибка доступа");
+            throw new AuthenticationException(response.ToString());
         }
     }
 
+    public static async Task UpdateUser(User user)
+    {
+        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        {
+            TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
+            PreparedLocalStorage.SaveLocalStorage();
+        }
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        options.Converters.Add(new JsonStringEnumConverter());
+        var taskResponse = httpClient.PutAsJsonAsync(UrlAddress.MainUrl + $"/User/put", user, options);
+        var response = taskResponse.Result;
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            throw new AuthenticationException(response.ToString());
+        }
+    }
+
+    
+    public static async Task DeleteUser(int id)
+    {
+        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        {
+            TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
+            PreparedLocalStorage.SaveLocalStorage();
+        }
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
+        var taskResponse = httpClient.DeleteAsync(UrlAddress.MainUrl + $"/User/Delete/{id}");
+        var response = taskResponse.Result;
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            throw new AuthenticationException(response.ToString());
+        }
+    }
 }

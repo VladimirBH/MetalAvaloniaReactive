@@ -18,7 +18,6 @@ namespace MetalAvaloniaReactive.ViewModels
         private ViewModelBase content;
         public MainWindowViewModel()
         {
-
             try
             {
                 LoadingApplication();
@@ -30,16 +29,10 @@ namespace MetalAvaloniaReactive.ViewModels
                 {
                     Content = AdminView = new MainAdminViewModel(this);
                 }
-
-
-
             }
             catch (ApplicationException ex)
             {
                 Content = Authorization = new AuthorizationViewModel(this);
-                
-                //Observable.Merge(Authorization.AuthorizationButtonClick.Select());
-                //Content = AdminView = new MainAdminViewModel(UserImplementation.GetAllUsers().Result, RoleImplementation.GetAllRoles().Result);
             }
 
         }
@@ -51,9 +44,7 @@ namespace MetalAvaloniaReactive.ViewModels
         }
         
         public AuthorizationViewModel Authorization { get; }
-        
         public MainAdminViewModel AdminView { get; }
-        
 
         private void LoadingApplication()
         {
@@ -70,11 +61,5 @@ namespace MetalAvaloniaReactive.ViewModels
                 throw new ApplicationException();
             }
         }
-
-        /*public void AuthorizationButtonClick()
-        {
-            UserImplementation.UserAuthorization();
-            var vm = new MainAdminView();
-        }*/
     }
 }
