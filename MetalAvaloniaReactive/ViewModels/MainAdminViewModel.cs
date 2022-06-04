@@ -1,7 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
@@ -13,16 +15,29 @@ namespace MetalAvaloniaReactive.ViewModels;
 public class MainAdminViewModel : ViewModelBase
 {
     private MainWindowViewModel _mainWindowViewModel;
+    private int _selectedTabItem;
+    private string _search;
+    private ObservableCollection<User> _users;
+    private ObservableCollection<Role> _roles;
+    public event PropertyChangedEventHandler PropertyChanged;
     public MainAdminViewModel(MainWindowViewModel mainWindowViewModel)
     {
         try
         {
-            Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result);
-            Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result);
+            this.WhenAnyValue(x => x.Search)
+                .Throttle(TimeSpan.FromMilliseconds(200))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(Searching);
+            
+            _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result);
+            _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result);
+            SearchButtonClick = ReactiveCommand.Create(SearchingItems);
             _mainWindowViewModel = mainWindowViewModel;
+            _selectedTabItem = 0;
             ExitFromApplication = ReactiveCommand.CreateFromTask(async () =>
             {
-                var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение", "Вы уверены, что хотите выйти?", ButtonEnum.YesNo, Icon.Info);
+                var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение",
+                    "Вы уверены, что хотите выйти?", ButtonEnum.YesNo, Icon.Info);
                 var messageBoxResult = await messageBox.Show();
                 if (messageBoxResult == ButtonResult.Yes)
                 {
@@ -31,17 +46,9 @@ public class MainAdminViewModel : ViewModelBase
                     _mainWindowViewModel.Content = new AuthorizationViewModel(_mainWindowViewModel);
                 }
             });
-            DeleteUserClick = ReactiveCommand.CreateFromTask<int>(async (id) =>
-            {
-                DeleteRecord(id, "users");
-            });
-            UpdateUserClick = AddUserClick= ReactiveCommand.Create<int>(OpenOneUserView);
-
-            UpdateRoleClick = AddRoleClick = ReactiveCommand.Create<int>(OpenOneRoleView);
-            DeleteRoleClick = ReactiveCommand.CreateFromTask<int>(async (id) =>
-            {
-                DeleteRecord(id, "roles");
-            });
+            AddRecordClick = ReactiveCommand.Create<int>(OpenOneRecordView);
+            DeleteRecordClick = ReactiveCommand.CreateFromTask<int>(async (id) => { DeleteRecord(id); });
+            UpdateRecordClick = ReactiveCommand.Create<int>(OpenOneRecordView);
         }
         catch (Exception ex)
         {
@@ -50,57 +57,103 @@ public class MainAdminViewModel : ViewModelBase
             messageBox.Show();
         }
     }
-    
-    public ObservableCollection<User> Users { get; }
-    public ObservableCollection<Role> Roles { get; }
 
+    public string Search
+    {
+        get => _search;
+        set => this.RaiseAndSetIfChanged(ref _search, value);
+
+    }
+
+    public ObservableCollection<User> Users
+    {
+        get => _users;
+        set => this.RaiseAndSetIfChanged(ref _users, value);
+    }
+    public ObservableCollection<Role> Roles
+    {
+        get => _roles;
+        set => this.RaiseAndSetIfChanged(ref _roles, value);
+    }
+
+    public int SelectedTabItem
+    {
+        get => _selectedTabItem;
+        set => this.RaiseAndSetIfChanged(ref _selectedTabItem, value);
+    }
+    public ReactiveCommand<int, Unit> UpdateRecordClick { get; }
+    public ReactiveCommand<int, Unit> DeleteRecordClick { get; }
     
-    
-    public ReactiveCommand<int, Unit> UpdateUserClick { get; }
-    public ReactiveCommand<int, Unit> AddUserClick { get; }
-    public ReactiveCommand<int, Unit> DeleteUserClick { get; }
-    
-    public ReactiveCommand<int, Unit> DeleteRoleClick { get; }
-    public ReactiveCommand<int, Unit> UpdateRoleClick { get; }
-    public ReactiveCommand<int, Unit> AddRoleClick { get; }
+    public ReactiveCommand<Unit, Unit> SearchButtonClick { get; }
 
     public ReactiveCommand<Unit, Unit> ExitFromApplication { get; }
+
+    public ReactiveCommand<int, Unit> AddRecordClick { get; } 
     
-    
-    void OpenOneUserView(int id)
+    async void DeleteRecord(int id)
     {
-        _mainWindowViewModel.Content = new AddUserViewModel(_mainWindowViewModel, id);
-    }
-    
-    async void DeleteRecord(int id, string table)
-    {
-        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение", "Вы уверены, что хотите удалить запись?", ButtonEnum.YesNo, Icon.Warning);
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение",
+            "Вы уверены, что хотите удалить запись?", ButtonEnum.YesNo, Icon.Warning);
         var messageBoxResult = await messageBox.Show();
         if (messageBoxResult == ButtonResult.No) return;
         try
         {
-            switch (table)
+            switch (SelectedTabItem)
             {
-                case "users":
+                case 0:
                     await UserImplementation.DeleteUser(id);
                     break;
-                case "roles":
+                case 1:
                     await RoleImplementation.DeleteRole(id);
                     break;
             }
-            var messageBoxInfo = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Инфо", "Запись успешно удалена \t", ButtonEnum.Ok, Icon.Info);
+
+            var messageBoxInfo =
+                MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Инфо", "Запись успешно удалена \t",
+                    ButtonEnum.Ok, Icon.Info);
             messageBoxInfo.Show();
             _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
         }
         catch (Exception ex)
         {
-            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", "Попробуйте повторить действие позже \t", ButtonEnum.Ok, Icon.Error);
+            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
+                "Не удалось повторить действие, возможно у элемента есть зависимые записи\t", ButtonEnum.Ok, Icon.Error);
             messageBoxError.Show();
         }
     }
-    
-    void OpenOneRoleView(int id)
+    void OpenOneRecordView(int id)
     {
-        _mainWindowViewModel.Content = new AddRoleViewModel(_mainWindowViewModel, id);
+        _mainWindowViewModel.Content = SelectedTabItem switch
+        {
+            0 => new AddUserViewModel(_mainWindowViewModel, id),
+            1 => new AddRoleViewModel(_mainWindowViewModel, id)
+        };
+    }
+
+    async void Searching(string s)
+    {
+        _users.Clear();
+        _roles.Clear();
+        if (string.IsNullOrWhiteSpace(s))
+        {
+            _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result);
+            _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result); 
+            return;
+        }
+        switch (SelectedTabItem)
+        {
+            case 0: _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result.Where(u => u.Login.Trim().ToLower().Contains(s)));
+                break;
+            case 1:
+                _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.Where(r => r.RoleName.Trim().ToLower().Contains(s)));
+                break;
+        }
+
+
+    }
+    void SearchingItems()
+    {
+        _users = new ObservableCollection<User>(Users.Where(u => u.Login.ToLower().Contains(_search)));
+        this.RaisePropertyChanged();
     }
 }

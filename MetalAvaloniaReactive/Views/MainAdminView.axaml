@@ -6,82 +6,77 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MetalAvaloniaReactive.Views.MainAdminView"
              Name="MainAdminUserControl">
-    <Grid RowDefinitions="6*, 1*">
-        <TabControl Grid.Row="0">
-            <TabItem Header="Пользователи" VerticalContentAlignment="Center">
-                <Grid RowDefinitions="6*, 1*">
-                    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl Items="{Binding Users}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Classes="ListView">
-                                        <Grid ColumnDefinitions="2*, 4*, 4*, 3*">
-                                            <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                    Background="#a8d7f3"
-                                                    BorderThickness="0"
-                                                    CornerRadius="10"
-                                                    Margin="10">
-                                                <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
-                                            </Border>
-                                            <Grid Grid.Column="1" RowDefinitions="1*, 1*, 1*">
-                                                <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Фамилия"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding Surname}"/>
-                                                </Grid>
-                                                <Grid Classes="ListView" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Имя"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding Name}"/>
-                                                </Grid>
-                                                <Grid Classes="ListView" Grid.Row="2" RowDefinitions="1*, 1*">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Отчество"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding Patronymic}"/>
-                                                </Grid>
+    
+    <Grid RowDefinitions="50, 10*, 2*">
+        <TextBox Grid.Row="0" Text="{Binding Search}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,15,0,0" Width="200"/>
+        <TabControl Grid.Row="1" AutoScrollToSelectedItem="True" SelectedIndex="{Binding SelectedTabItem}">
+            <TabItem Header="Пользователи" VerticalContentAlignment="Center" >
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl Items="{Binding Users}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="ListView">
+                                    <Grid ColumnDefinitions="2*, 4*, 4*, 3*">
+                                        <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                Background="#a8d7f3"
+                                                BorderThickness="0"
+                                                CornerRadius="10"
+                                                Margin="10">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
+                                        </Border>
+                                        <Grid Grid.Column="1" RowDefinitions="1*, 1*, 1*">
+                                            <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Фамилия"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Surname}"/>
                                             </Grid>
-                                            <Grid Grid.Column="2" RowDefinitions="1*, 1*, 1*, 1*">
-                                                <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Логин"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding Login}"/>
-                                                </Grid>
-                                                <Grid Classes="ListView" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Дата рождения"/>
-                                                    <TextBlock Grid.Row="1">
-                                                        <TextBlock.Text>
-                                                            <MultiBinding StringFormat="{}{0}.{1}.{2}">
-                                                                <Binding Path="DateBirth.Day" />
-                                                                <Binding Path="DateBirth.Month" />
-                                                                <Binding Path="DateBirth.Year" />
-                                                            </MultiBinding>
-                                                        </TextBlock.Text>
-                                                    </TextBlock>
-                                                </Grid>
-                                                <Grid Classes="ListView" Grid.Row="2" RowDefinitions="1*, 1*">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Телефон"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding PhoneNumber}"/>
-                                                </Grid>
-                                                
+                                            <Grid Classes="ListView" Grid.Row="1" RowDefinitions="1*, 1*">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Имя"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Name}"/>
                                             </Grid>
-                                            <Grid Grid.Column="3" RowDefinitions="1*, 1*">
-                                                <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*" VerticalAlignment="Top">
-                                                    <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Роль" Margin="0"/>
-                                                    <TextBlock Grid.Row="1" Text="{Binding Role.RoleName}" Margin="0"/>
-                                                </Grid>
-                                                <Grid Grid.Row="1" RowDefinitions="1*, 1*" VerticalAlignment="Bottom">
-                                                    <Button Classes="ListView Update" Grid.Row="0" HorizontalAlignment="Stretch" Command="{Binding DataContext.UpdateUserClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
-                                                    <Button Classes="ListView Delete" Grid.Row="1" HorizontalAlignment="Stretch" Command="{Binding DataContext.DeleteUserClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
-                                                </Grid>
+                                            <Grid Classes="ListView" Grid.Row="2" RowDefinitions="1*, 1*">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Отчество"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Patronymic}"/>
                                             </Grid>
                                         </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                    <Button Classes="ListView Update Add" Grid.Row="1" Command="{Binding AddUserClick}" Content="Добавить">
-                        <Button.CommandParameter>
-                            <sys:Int32>-1</sys:Int32>
-                        </Button.CommandParameter>
-                    </Button>
-                </Grid>
+                                        <Grid Grid.Column="2" RowDefinitions="1*, 1*, 1*, 1*">
+                                            <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Логин"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Login}"/>
+                                            </Grid>
+                                            <Grid Classes="ListView" Grid.Row="1" RowDefinitions="1*, 1*">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Дата рождения"/>
+                                                <TextBlock Grid.Row="1">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0}.{1}.{2}">
+                                                            <Binding Path="DateBirth.Day" />
+                                                            <Binding Path="DateBirth.Month" />
+                                                            <Binding Path="DateBirth.Year" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+                                            <Grid Classes="ListView" Grid.Row="2" RowDefinitions="1*, 1*">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Телефон"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding PhoneNumber}"/>
+                                            </Grid>
+                                            
+                                        </Grid>
+                                        <Grid Grid.Column="3" RowDefinitions="1*, 1*">
+                                            <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*" VerticalAlignment="Top">
+                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Роль" Margin="0"/>
+                                                <TextBlock Grid.Row="1" Text="{Binding Role.RoleName}" Margin="0"/>
+                                            </Grid>
+                                            <Grid Grid.Row="1" RowDefinitions="1*, 1*" VerticalAlignment="Bottom">
+                                                <Button Classes="ListView Update" Grid.Row="0" HorizontalAlignment="Stretch" Command="{Binding DataContext.UpdateUserClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
+                                                <Button Classes="ListView Delete" Grid.Row="1" HorizontalAlignment="Stretch" Command="{Binding DataContext.DeleteUserClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Роли" VerticalContentAlignment="Center">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -107,17 +102,25 @@
                                         </Grid>
                                     </Grid>
                                 </Border>
-
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <Button Grid.Row="1" Classes="Exit" Content="Выйти">
-            <Button.Command>
-                <Binding Path="ExitFromApplication" />
-            </Button.Command>
-        </Button>
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" >
+            <Grid ColumnDefinitions="4*, 1*, 1*">
+                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить">
+                    <Button.CommandParameter>
+                        <sys:Int32>-1</sys:Int32>
+                    </Button.CommandParameter>
+                </Button>
+                <Button Grid.Column="2" Classes="Delete AddExit" Content="Выйти">
+                    <Button.Command>
+                        <Binding Path="ExitFromApplication" />
+                    </Button.Command>
+                </Button>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

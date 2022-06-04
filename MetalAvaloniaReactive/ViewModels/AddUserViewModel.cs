@@ -49,7 +49,7 @@ public class AddUserViewModel : ViewModelBase
         _mainWindowViewModel = mainWindowViewModel;
         CancelButtonClick = ReactiveCommand.Create(CancellationOperation);
         _roles = RoleImplementation.GetAllRoles().Result;
-
+        
         if (idUser != -1)
         {
              _user = UserImplementation.GetUserById(idUser).Result;
@@ -206,4 +206,6 @@ public class AddUserViewModel : ViewModelBase
             messageBox.Show();
         }
     }
+
+
 }

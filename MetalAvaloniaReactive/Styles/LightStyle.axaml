@@ -90,15 +90,11 @@
     <Style Selector="Button.List">
         <Setter Property="FontSize" Value="16"/>
     </Style>
-    <Style Selector="Button.Add">
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="Width" Value="150"/>
-        <Setter Property="Margin" Value="15, 0"/>
-    </Style>
-    <Style Selector="Button.Exit">
+    <Style Selector="Button.AddExit">
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment" Value="Bottom"/>
         <Setter Property="Width" Value="150"/>
+        <Setter Property="Margin" Value="10"/>
     </Style>
     <!-- ################################### -->
     <!-- ######## DatePicker Style ######### -->
