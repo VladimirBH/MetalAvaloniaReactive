@@ -8,7 +8,7 @@ public class BaseEntity : IEntity
 {
     public int Id { get; set; }
 
-    public Instant CreationDate { get; set; }
+    public DateTimeOffset CreationDate { get; set; }
     
-    public Instant? UpdatedDate { get; set; }
+    public DateTimeOffset? UpdatedDate { get; set; }
 }

@@ -10,10 +10,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AvaloniaClientMVVM.Models;
+using MetalAvaloniaReactive.Models;
 
 namespace AvaloniaClientMetal.Models;
 
-public class UserImplementation
+public static class UserImplementation
 {
     public static async Task<TokenPair> UserAuthorization(DataAuth dataAuth)
     {

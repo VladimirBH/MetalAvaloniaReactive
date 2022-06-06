@@ -4,18 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MetalAvaloniaReactive.Views.AddRoleView">
-    <Grid ShowGridLines="True" RowDefinitions="1*, 6*">
-        <TextBlock Classes="Title" Grid.Row="0" Text="Добавление пользователя"/>
-        <Grid Grid.Row="1" ShowGridLines="True" RowDefinitions="1*, 1*, 1*, 1*, 1*, 1*, 1*, 1*" ColumnDefinitions="1*, 3*">
-            <TextBlock Classes="ForAdd" Grid.Row="0" Grid.Column="0" Text="Фамилия"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Имя"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Отчество"/>
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Дата рождения"/>
-            <TextBlock Grid.Row="4" Grid.Column="0" Text="Номер телефона"/>
-            <TextBlock Grid.Row="5" Grid.Column="0" Text="Роль"/>
-            <TextBlock Grid.Row="6" Grid.Column="0" Text="Логин"/>
-            <TextBlock Grid.Row="7" Grid.Column="0" Text="Пароль"/>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid RowDefinitions="1*, 7*">
+            <TextBlock Classes="Title" Grid.Row="0" Text="{Binding TitleContent}"/>
+            <Grid Grid.Row="1" RowDefinitions="3*, 3*, 3*" ColumnDefinitions="3*, 4*, 4*">
+                <TextBlock Classes="ForAdd" Grid.Row="0" Grid.Column="0" Text="Название:"/>
+                <TextBox Classes="ForAdd" Grid.Row="0" Grid.Column="1" Text="{Binding RoleName}" MaxLength="15"/>
+                <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                    <Button Grid.Column="0" Classes="AddExit" Content="{Binding ContentForSubmitButton}" Command="{Binding ActionForSubmitButton}"/>
+                    <Button Grid.Column="1" Classes="AddExit Delete" Content="Отмена" Command="{Binding CancelButtonClick}"/>
+                </Grid>
+            </Grid>
+                                
         </Grid>
-        
-    </Grid>
+    </ScrollViewer>
 </UserControl>

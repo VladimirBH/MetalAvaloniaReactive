@@ -23,14 +23,7 @@ namespace MetalAvaloniaReactive.ViewModels
             try
             {
                 LoadingApplication();
-                if (KeepRoleId.RoleId == 1)
-                {
-                    Content = AdminView = new MainAdminViewModel(this);
-                }
-                else
-                {
-                    Content = AdminView = new MainAdminViewModel(this);
-                }
+                Content = AdminView = new MainAdminViewModel(this, KeepRoleId.RoleId == 1);
             }
             catch (AggregateException ex)
             {

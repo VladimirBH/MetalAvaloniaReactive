@@ -138,7 +138,7 @@ public class AddUserViewModel : ViewModelBase
     }
     void CancellationOperation()
     {
-        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
+        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel, true);
     }
 
     public Role SelectedRole
@@ -160,7 +160,7 @@ public class AddUserViewModel : ViewModelBase
             RoleId = SelectedRole.Id,
             Login = Login,
             Password = BCrypt.Net.BCrypt.HashPassword(Password, 14),
-            CreationDate = DateTime.Now.ToUniversalTime().ToInstant()
+            CreationDate = DateTime.Now.ToUniversalTime().ToInstant().ToDateTimeOffset()
         };
         var task = UserImplementation.AddUser(user);
         try
@@ -182,7 +182,7 @@ public class AddUserViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(Password))
         {
-            ForPassword = Password;
+            ForPassword = BCrypt.Net.BCrypt.HashPassword(Password, 14);
         }
 
         User user = new User
@@ -196,7 +196,7 @@ public class AddUserViewModel : ViewModelBase
             RoleId = SelectedRole.Id,
             Login = Login,
             Password = ForPassword,
-            CreationDate = DateTime.Now.ToUniversalTime().ToInstant()
+            CreationDate = _user.CreationDate
         };
         var task = UserImplementation.UpdateUser(user);
         try

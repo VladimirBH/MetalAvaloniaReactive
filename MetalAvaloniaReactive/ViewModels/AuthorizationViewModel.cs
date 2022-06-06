@@ -27,7 +27,9 @@ public class AuthorizationViewModel : ViewModelBase
                 {
                     await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
-                    _mainWindowViewModel.Content = new MainAdminViewModel(mainWindowViewModel);
+                    KeepRoleId.RoleId = tokenPair.Result.IdRole;
+                    _mainWindowViewModel.Content = new MainAdminViewModel(mainWindowViewModel, KeepRoleId.RoleId == 1);
+
                 }
                 catch (AuthenticationException ex)
                 {

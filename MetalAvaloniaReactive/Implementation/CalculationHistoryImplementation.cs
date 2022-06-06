@@ -11,7 +11,7 @@ using WebServer.DataAccess.Implementations.Entities;
 
 namespace MetalAvaloniaReactive.Models;
 
-public class CalculationHistoryImplementation
+public static class CalculationHistoryImplementation
 {
     public static async Task<List<CalculationHistory>> GetAllHistoryRecords()
     {

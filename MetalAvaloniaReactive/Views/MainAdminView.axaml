@@ -8,7 +8,7 @@
              Name="MainAdminUserControl">
     
     <Grid RowDefinitions="50, 10*, 2*">
-        <Grid Grid.Row="0" ColumnDefinitions="1*, 3*, 3*, 2*, 1*">
+        <Grid Grid.Row="0" ColumnDefinitions="1*, 3*, 3*, 2*, 1*" IsVisible="{Binding IsAdmin}" >
             <TextBlock Grid.Column="0" Text="Поиск:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15,15,0,0"/>
             <TextBox Grid.Column="1" Text="{Binding Search}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,15,0,0" Width="200"/>
             <!--<TextBlock Grid.Column="2" Text="Сортировка:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15,15,0,0"/>
@@ -17,7 +17,7 @@
         </Grid>
         
         <TabControl Grid.Row="1" AutoScrollToSelectedItem="True" SelectedIndex="{Binding SelectedTabItem}">
-            <TabItem Header="Пользователи" VerticalContentAlignment="Center" >
+            <TabItem Header="Пользователи" VerticalContentAlignment="Center" IsVisible="{Binding IsAdmin}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <ItemsControl Items="{Binding Users}">
                         <ItemsControl.ItemTemplate>
@@ -85,7 +85,7 @@
                     </ItemsControl>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Роли" VerticalContentAlignment="Center">
+            <TabItem Header="Роли" VerticalContentAlignment="Center" IsVisible="{Binding IsAdmin}">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                     <ItemsControl Items="{Binding Roles}">
                         <ItemsControl.ItemTemplate>
@@ -114,7 +114,7 @@
                     </ItemsControl>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="История" VerticalContentAlignment="Center">
+            <TabItem Header="История" VerticalContentAlignment="Center" IsVisible="{Binding IsAdmin}">
                 <ScrollViewer>
                     <ItemsControl Items="{Binding CalculationHistories}">
                         <ItemsControl.ItemTemplate>
@@ -197,7 +197,7 @@
                     </ItemsControl>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Печи" VerticalContentAlignment="Center">
+            <TabItem Header="Печи" VerticalContentAlignment="Center" IsVisible="{Binding IsAdmin}">
                 <ScrollViewer>
                     <ItemsControl Items="{Binding Furnaces}">
                         <ItemsControl.ItemTemplate>
@@ -258,7 +258,7 @@
         </TabControl>
         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" >
             <Grid ColumnDefinitions="4*, 1*, 1*">
-                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить" IsVisible="{Binding AddButtonVisible}">
+                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить" IsVisible="{Binding IsAdmin}">
                     <Button.CommandParameter>
                         <sys:Int32>-1</sys:Int32>
                     </Button.CommandParameter>
