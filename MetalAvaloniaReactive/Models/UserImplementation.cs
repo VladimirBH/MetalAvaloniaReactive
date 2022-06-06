@@ -22,23 +22,16 @@ public class UserImplementation
         options.Converters.Add(new JsonStringEnumConverter());
         var taskResponse = httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/User/signin", dataAuth, options);
         var response = taskResponse.Result;
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Неверный логин/пароль");
+        var text = await response.Content.ReadAsStringAsync();
+        TokenPair tokenPair = JsonSerializer.Deserialize<TokenPair>(text);
+        if (tokenPair != null)
         {
-            var text = await response.Content.ReadAsStringAsync();
-            TokenPair tokenPair = JsonSerializer.Deserialize<TokenPair>(text);
-            if (tokenPair != null)
-            {
-                return tokenPair;
-            }
-            else
-            {
-                throw new JsonException("Произошла ошибка");
-            }
+            return tokenPair;
         }
-        else
-        {
-            throw new AuthenticationException("Неверный логин/пароль");
-        }
+
+        throw new JsonException("Произошла ошибка");
+
     }
     
     public static async Task<TokenPair> RefreshTokenPair(string refreshToken)
@@ -47,23 +40,16 @@ public class UserImplementation
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", refreshToken);
         var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/Token/RefreshAccess");
         var response = taskResponse.Result;
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Ошибка доступа");
+        var text = await response.Content.ReadAsStringAsync();
+        TokenPair tokenPair = JsonSerializer.Deserialize<TokenPair>(text);
+        if (tokenPair != null)
         {
-            var text = await response.Content.ReadAsStringAsync();
-            TokenPair tokenPair = JsonSerializer.Deserialize<TokenPair>(text);
-            if (tokenPair != null)
-            {
-                return tokenPair;
-            }
-            else
-            {
-                throw new JsonException("Произошла ошибка");
-            }
+            return tokenPair;
         }
-        else
-        {
-            throw new AuthenticationException("Ошибка доступа");
-        }
+
+        throw new JsonException("Произошла ошибка");
+
     }
 
     public static async Task<List<User>> GetAllUsers()
@@ -79,23 +65,16 @@ public class UserImplementation
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/User/Get");
         var response = taskResponse.Result;
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Ошибка доступа");
+        var text = await response.Content.ReadAsStringAsync();
+        List<User> users = JsonSerializer.Deserialize<List<User>>(text);
+        if (users != null)
         {
-            var text = await response.Content.ReadAsStringAsync();
-            List<User> users = JsonSerializer.Deserialize<List<User>>(text);
-            if (users != null)
-            {
-                return users;
-            }
-            else
-            {
-                throw new JsonException("Произошла ошибка");
-            }
+            return users;
         }
-        else
-        {
-            throw new AuthenticationException("Ошибка доступа");
-        } 
+
+        throw new JsonException("Произошла ошибка");
+
     }
 
     public static async Task<User> GetCurrentUserInfo()
@@ -110,23 +89,16 @@ public class UserImplementation
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
         var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/User/GetCurrentUserInfo");
         var response = taskResponse.Result;
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Ошибка доступа");
+        var text = await response.Content.ReadAsStringAsync();
+        User user = JsonSerializer.Deserialize<User>(text);
+        if (user != null)
         {
-            var text = await response.Content.ReadAsStringAsync();
-            User user = JsonSerializer.Deserialize<User>(text);
-            if (user != null)
-            {
-                return user;
-            }
-            else
-            {
-                throw new JsonException("Произошла ошибка");
-            }
+            return user;
         }
-        else
-        {
-            throw new AuthenticationException("Ошибка доступа");
-        }
+
+        throw new JsonException("Произошла ошибка");
+
     }
 
     public static async Task<User> GetUserById(int id)
@@ -142,23 +114,16 @@ public class UserImplementation
         var urlString = UrlAddress.MainUrl + $"/user/get/{id}";
         var taskResponse = httpClient.GetAsync(urlString);
         var response = taskResponse.Result;
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Ошибка доступа");
+        var text = await response.Content.ReadAsStringAsync();
+        User user = JsonSerializer.Deserialize<User>(text);
+        if (user != null)
         {
-            var text = await response.Content.ReadAsStringAsync();
-            User user = JsonSerializer.Deserialize<User>(text);
-            if (user != null)
-            {
-                return user;
-            }
-            else
-            {
-                throw new JsonException("Произошла ошибка");
-            }
+            return user;
         }
-        else
-        {
-            throw new AuthenticationException("Ошибка доступа");
-        }
+
+        throw new JsonException("Произошла ошибка");
+
     }
 
     public static async Task AddUser(User user)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 using MetalAvaloniaReactive.ViewModels;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
+using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using MetalAvaloniaReactive.Views;
 using ReactiveUI;
@@ -30,10 +32,15 @@ namespace MetalAvaloniaReactive.ViewModels
                     Content = AdminView = new MainAdminViewModel(this);
                 }
             }
-            catch (ApplicationException ex)
+            catch (AggregateException ex)
+            {
+                Content = new ConnectionErrorViewModel();
+            }
+            catch (Exception ex)
             {
                 Content = Authorization = new AuthorizationViewModel(this);
             }
+
 
         }
 
@@ -48,18 +55,19 @@ namespace MetalAvaloniaReactive.ViewModels
 
         private void LoadingApplication()
         {
-            try
+            PreparedLocalStorage.LoadLocalStorage();
+            TokenPair tokenPair = PreparedLocalStorage.GetTokenPairFromLocalStorage();
+            var tokenPair1 = UserImplementation.RefreshTokenPair(tokenPair.RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair1.Result);
+            KeepRoleId.RoleId = tokenPair1.Result.IdRole;
+            /*try
             {
-                PreparedLocalStorage.LoadLocalStorage();
-                TokenPair tokenPair = PreparedLocalStorage.GetTokenPairFromLocalStorage();
-                var tokenPair1 = UserImplementation.RefreshTokenPair(tokenPair.RefreshToken);
-                PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair1.Result);
-                KeepRoleId.RoleId = tokenPair1.Result.IdRole;
+
             }
             catch (Exception ex)
             {
                 throw new ApplicationException();
-            }
+            }*/
         }
     }
 }

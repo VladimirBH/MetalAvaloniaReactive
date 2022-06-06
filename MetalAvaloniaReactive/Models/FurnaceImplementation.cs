@@ -9,12 +9,13 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
+using WebServer.DataAccess.Implementations.Entities;
 
 namespace MetalAvaloniaReactive.Models;
 
-public class RoleImplementation
+public class FurnaceImplementation
 {
-    public static async Task<List<Role>> GetAllRoles()
+    public static async Task<List<Furnace>> GetAllFurnaces()
     {
         if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
@@ -25,14 +26,14 @@ public class RoleImplementation
         var accessToken = PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken;
         var httpClient = new HttpClient();
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/Role/Get");
+        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/Furnace/Get");
         var response = taskResponse.Result;
         if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Ошибка доступа");
         var text = await response.Content.ReadAsStringAsync();
-        List<Role> roles = JsonSerializer.Deserialize<List<Role>>(text);
-        if (roles != null)
+        List<Furnace> furnaces = JsonSerializer.Deserialize<List<Furnace>>(text);
+        if (furnaces != null)
         {
-            return roles;
+            return furnaces;
         }
 
         throw new JsonException("Произошла ошибка");
@@ -40,7 +41,7 @@ public class RoleImplementation
     }
     
     
-    public static async Task AddRole(Role role)
+    public static async Task AddFurnace(Furnace furnace)
     {
         if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
@@ -52,7 +53,7 @@ public class RoleImplementation
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
         var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         options.Converters.Add(new JsonStringEnumConverter());
-        var taskResponse = httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/Role/CreateRole", role, options);
+        var taskResponse = httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/furnace/Create", furnace, options);
         var response = taskResponse.Result;
         if (response.StatusCode != HttpStatusCode.OK)
         {
@@ -60,7 +61,7 @@ public class RoleImplementation
         }
     }
 
-    public static async Task UpdateRole(Role role)
+    public static async Task UpdateFurnace(Furnace furnace)
     {
         if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
@@ -72,7 +73,7 @@ public class RoleImplementation
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
         var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         options.Converters.Add(new JsonStringEnumConverter());
-        var taskResponse = httpClient.PutAsJsonAsync(UrlAddress.MainUrl + $"/Role/put", role, options);
+        var taskResponse = httpClient.PutAsJsonAsync(UrlAddress.MainUrl + $"/furnace/put", furnace, options);
         var response = taskResponse.Result;
         if (response.StatusCode != HttpStatusCode.OK)
         {
@@ -81,7 +82,7 @@ public class RoleImplementation
     }
 
     
-    public static async Task DeleteRole(int id)
+    public static async Task DeleteFurnace(int id)
     {
         if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
@@ -98,5 +99,4 @@ public class RoleImplementation
             throw new AuthenticationException(response.ToString());
         }
     }
-    
 }

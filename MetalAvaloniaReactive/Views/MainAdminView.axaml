@@ -8,7 +8,14 @@
              Name="MainAdminUserControl">
     
     <Grid RowDefinitions="50, 10*, 2*">
-        <TextBox Grid.Row="0" Text="{Binding Search}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,15,0,0" Width="200"/>
+        <Grid Grid.Row="0" ColumnDefinitions="1*, 3*, 3*, 2*, 1*">
+            <TextBlock Grid.Column="0" Text="Поиск:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15,15,0,0"/>
+            <TextBox Grid.Column="1" Text="{Binding Search}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,15,0,0" Width="200"/>
+            <!--<TextBlock Grid.Column="2" Text="Сортировка:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15,15,0,0"/>
+            <ComboBox Grid.Column="3" FontSize="18" Items="{Binding OrderItems}" SelectedIndex="{Binding SelectedIndexForOrder}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,15,0,0"/>
+            <CheckBox Grid.Column="4" IsChecked="{Binding IsCheckedForOrder}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="15,15,15,0"/>-->
+        </Grid>
+        
         <TabControl Grid.Row="1" AutoScrollToSelectedItem="True" SelectedIndex="{Binding SelectedTabItem}">
             <TabItem Header="Пользователи" VerticalContentAlignment="Center" >
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
@@ -67,8 +74,8 @@
                                                 <TextBlock Grid.Row="1" Text="{Binding Role.RoleName}" Margin="0"/>
                                             </Grid>
                                             <Grid Grid.Row="1" RowDefinitions="1*, 1*" VerticalAlignment="Bottom">
-                                                <Button Classes="ListView Update" Grid.Row="0" HorizontalAlignment="Stretch" Command="{Binding DataContext.UpdateUserClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
-                                                <Button Classes="ListView Delete" Grid.Row="1" HorizontalAlignment="Stretch" Command="{Binding DataContext.DeleteUserClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
+                                                <Button Classes="ListView Update" Grid.Row="0" HorizontalAlignment="Stretch" Command="{Binding DataContext.UpdateRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
+                                                <Button Classes="ListView Delete" Grid.Row="1" HorizontalAlignment="Stretch" Command="{Binding DataContext.DeleteRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
                                             </Grid>
                                         </Grid>
                                     </Grid>
@@ -97,8 +104,91 @@
                                             <TextBlock Grid.Row="1" Text="{Binding RoleName}"/>
                                         </Grid>
                                         <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding DataContext.UpdateRoleClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
-                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DataContext.DeleteRoleClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
+                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding DataContext.UpdateRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
+                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DataContext.DeleteRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="История" VerticalContentAlignment="Center">
+                <ScrollViewer>
+                    <ItemsControl Items="{Binding CalculationHistories}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="ListView">
+                                    <Grid ColumnDefinitions="2*, 4*, 4*">
+                                        <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                Background="#a8d7f3"
+                                                BorderThickness="0"
+                                                CornerRadius="10"
+                                                Margin="10">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
+                                        </Border>
+                                        <Grid Grid.Column="1" RowDefinitions="1*, 1*" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Название"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding RoleName}"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Печи" VerticalContentAlignment="Center">
+                <ScrollViewer>
+                    <ItemsControl Items="{Binding Furnaces}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="ListView">
+                                    <Grid ColumnDefinitions="2*, 4*, 4*">
+                                        <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                Background="#a8d7f3"
+                                                BorderThickness="0"
+                                                CornerRadius="10"
+                                                Margin="10">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
+                                        </Border>
+                                        <Grid Grid.Column="1" RowDefinitions="1*, 1*" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Название"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding FurnaceName}"/>
+                                        </Grid>
+                                        <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding DataContext.UpdateRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
+                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DataContext.DeleteRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Расчет" VerticalContentAlignment="Center">
+                <ScrollViewer>
+                    <ItemsControl Items="{Binding Furnaces}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Classes="ListView">
+                                    <Grid ColumnDefinitions="2*, 4*, 4*">
+                                        <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                                Background="#a8d7f3"
+                                                BorderThickness="0"
+                                                CornerRadius="10"
+                                                Margin="10">
+                                            <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
+                                        </Border>
+                                        <Grid Grid.Column="1" RowDefinitions="1*, 1*" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Название"/>
+                                            <TextBlock Grid.Row="1" Text="{Binding FurnaceName}"/>
+                                        </Grid>
+                                        <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
+                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding DataContext.UpdateRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
+                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DataContext.DeleteRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
                                         </Grid>
                                     </Grid>
                                 </Border>
@@ -110,7 +200,7 @@
         </TabControl>
         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" >
             <Grid ColumnDefinitions="4*, 1*, 1*">
-                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить">
+                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить" IsVisible="{Binding AddButtonVisible}">
                     <Button.CommandParameter>
                         <sys:Int32>-1</sys:Int32>
                     </Button.CommandParameter>

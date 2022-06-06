@@ -9,6 +9,8 @@ using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using ReactiveUI;
+using WebServer.Classes;
+using WebServer.DataAccess.Implementations.Entities;
 
 namespace MetalAvaloniaReactive.ViewModels;
 
@@ -19,6 +21,8 @@ public class MainAdminViewModel : ViewModelBase
     private string _search;
     private ObservableCollection<User> _users;
     private ObservableCollection<Role> _roles;
+    private ObservableCollection<CalculationHistory> _calculationHistories;
+    private ObservableCollection<Furnace> _furnaces;
     public event PropertyChangedEventHandler PropertyChanged;
     public MainAdminViewModel(MainWindowViewModel mainWindowViewModel)
     {
@@ -29,8 +33,12 @@ public class MainAdminViewModel : ViewModelBase
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(Searching);
             
-            _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result);
-            _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result);
+            
+            _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result.OrderBy(u => u.Id));
+            _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.OrderBy(r => r.Id));
+            _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result);
+            _calculationHistories = CalculationHistories = new ObservableCollection<CalculationHistory>(CalculationHistoryImplementation.GetAllHistoryRecords().Result.
+                OrderBy(x => x.CreationDate));
             SearchButtonClick = ReactiveCommand.Create(SearchingItems);
             _mainWindowViewModel = mainWindowViewModel;
             _selectedTabItem = 0;
@@ -75,6 +83,16 @@ public class MainAdminViewModel : ViewModelBase
         get => _roles;
         set => this.RaiseAndSetIfChanged(ref _roles, value);
     }
+    public ObservableCollection<CalculationHistory> CalculationHistories
+    {
+        get => _calculationHistories;
+        set => this.RaiseAndSetIfChanged(ref _calculationHistories, value);
+    }
+    public ObservableCollection<Furnace> Furnaces
+    {
+        get => _furnaces;
+        set => this.RaiseAndSetIfChanged(ref _furnaces, value);
+    }
 
     public int SelectedTabItem
     {
@@ -106,6 +124,9 @@ public class MainAdminViewModel : ViewModelBase
                 case 1:
                     await RoleImplementation.DeleteRole(id);
                     break;
+                case 3:
+                    await FurnaceImplementation.DeleteFurnace(id);
+                    break;
             }
 
             var messageBoxInfo =
@@ -126,11 +147,12 @@ public class MainAdminViewModel : ViewModelBase
         _mainWindowViewModel.Content = SelectedTabItem switch
         {
             0 => new AddUserViewModel(_mainWindowViewModel, id),
-            1 => new AddRoleViewModel(_mainWindowViewModel, id)
+            1 => new AddRoleViewModel(_mainWindowViewModel, id),
+            3 => new AddFurnaceViewModel(_mainWindowViewModel, id)
         };
     }
 
-    async void Searching(string s)
+    void Searching(string s)
     {
         _users.Clear();
         _roles.Clear();
@@ -142,10 +164,17 @@ public class MainAdminViewModel : ViewModelBase
         }
         switch (SelectedTabItem)
         {
-            case 0: _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result.Where(u => u.Login.Trim().ToLower().Contains(s)));
+            case 0: _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result
+                    .Where(u => u.Login.Trim().ToLower().Contains(s.Trim().ToLower()) || 
+                                u.Surname.Trim().ToLower().Contains(s.Trim().ToLower()) || 
+                                u.Name.Trim().ToLower().Contains(s.Trim().ToLower()) ||
+                                u.Patronymic.Trim().ToLower().Contains(s.Trim().ToLower())));
                 break;
             case 1:
-                _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.Where(r => r.RoleName.Trim().ToLower().Contains(s)));
+                _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.Where(r => r.RoleName.Trim().ToLower().Contains(s.Trim().ToLower())));
+                break;
+            case 3:
+                _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result.Where(r => r.FurnaceName.Trim().ToLower().Contains(s.Trim().ToLower())));
                 break;
         }
 

@@ -25,6 +25,7 @@ public class AddUserViewModel : ViewModelBase
     private int _roleId;
     private Role _selectedRole;
     private User _user;
+    private string ForPassword;
 
     private List<Role> _roles;
 
@@ -57,10 +58,10 @@ public class AddUserViewModel : ViewModelBase
             _name = _user.Name;
             _patronymic = _user.Patronymic;
             _login = _user.Login;
-            //_password = user.Password;
             _dateBirth = _user.DateBirth;
             _phoneNumber = _user.PhoneNumber;
             _roleId = _user.RoleId;
+            ForPassword = _user.Password;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(async () =>
             {
                 UpdateUser();
@@ -158,7 +159,7 @@ public class AddUserViewModel : ViewModelBase
             PhoneNumber = PhoneNumber,
             RoleId = SelectedRole.Id,
             Login = Login,
-            Password = Password,
+            Password = BCrypt.Net.BCrypt.HashPassword(Password, 14),
             CreationDate = DateTime.Now.ToUniversalTime().ToInstant()
         };
         var task = UserImplementation.AddUser(user);
@@ -179,6 +180,11 @@ public class AddUserViewModel : ViewModelBase
     
     async void UpdateUser()
     {
+        if (!string.IsNullOrWhiteSpace(Password))
+        {
+            ForPassword = Password;
+        }
+
         User user = new User
         {
             Id = _user.Id,
@@ -189,7 +195,7 @@ public class AddUserViewModel : ViewModelBase
             PhoneNumber = PhoneNumber,
             RoleId = SelectedRole.Id,
             Login = Login,
-            Password = Password,
+            Password = ForPassword,
             CreationDate = DateTime.Now.ToUniversalTime().ToInstant()
         };
         var task = UserImplementation.UpdateUser(user);

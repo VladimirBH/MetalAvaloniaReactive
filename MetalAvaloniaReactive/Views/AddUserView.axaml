@@ -32,8 +32,8 @@
                 <TextBox Classes="ForAdd" Grid.Row="6" Grid.Column="1" Text="{Binding Login}" MaxLength="20"/>
                 <TextBox Classes="ForAdd" Grid.Row="7" Grid.Column="1" PasswordChar="*" Text="{Binding Password}"/>
                 <Grid Grid.Row="8" Grid.Column="1" ColumnDefinitions="1*, 1*">
-                    <Button Grid.Column="0" Classes="Add" Content="{Binding ContentForSubmitButton}" Command="{Binding ActionForSubmitButton}"/>
-                    <Button Grid.Column="1" Classes="Add Delete" Content="Отмена" Command="{Binding CancelButtonClick}"/>
+                    <Button Grid.Column="0" Classes="AddExit" Content="{Binding ContentForSubmitButton}" Command="{Binding ActionForSubmitButton}"/>
+                    <Button Grid.Column="1" Classes="AddExit Delete" Content="Отмена" Command="{Binding CancelButtonClick}"/>
                 </Grid>
             </Grid>
                                 
