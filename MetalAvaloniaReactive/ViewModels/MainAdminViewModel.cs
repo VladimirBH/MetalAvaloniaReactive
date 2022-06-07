@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Security.Authentication;
 using AvaloniaClientMetal.Models;
+using AvaloniaClientMVVM.Interfaces;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
@@ -51,16 +53,18 @@ public class MainAdminViewModel : ViewModelBase
             _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result);
             _calculationHistories = CalculationHistories = new ObservableCollection<CalculationHistory>(CalculationHistoryImplementation.GetAllHistoryRecords().Result.
                 OrderBy(x => x.CreationDate));
+            
+           
             SearchButtonClick = ReactiveCommand.Create(SearchingItems);
             _selectedTabItem = 0;
             AddRecordClick = ReactiveCommand.Create<int>(OpenOneRecordView);
             DeleteRecordClick = ReactiveCommand.CreateFromTask<int>(async (id) => { DeleteRecord(id); });
             UpdateRecordClick = ReactiveCommand.Create<int>(OpenOneRecordView);
         }
-        catch (Exception ex)
+        catch (AuthenticationException ex)
         {
             var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow
-                ("Ошибка", ex.Message, ButtonEnum.Ok, Icon.Error);
+                ("Ошибка", "ex.Message", ButtonEnum.Ok, Icon.Error);
             messageBox.Show();
         }
 
