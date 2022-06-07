@@ -25,6 +25,7 @@ public class MainAdminViewModel : ViewModelBase
     private ObservableCollection<Role> _roles;
     private ObservableCollection<CalculationHistory> _calculationHistories;
     private ObservableCollection<Furnace> _furnaces;
+    private bool _isCalculationHistory;
     public MainAdminViewModel(MainWindowViewModel mainWindowViewModel, bool isAdmin)
     {
         _mainWindowViewModel = mainWindowViewModel;
@@ -48,6 +49,10 @@ public class MainAdminViewModel : ViewModelBase
                 .Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(Searching);
+            this.WhenAnyValue(x => x.SelectedTabItem)
+                .Throttle(TimeSpan.FromMilliseconds(10))
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(IsVisibleAddButton);
             _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result.OrderBy(u => u.Id));
             _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.OrderBy(r => r.Id));
             _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result);
@@ -57,6 +62,7 @@ public class MainAdminViewModel : ViewModelBase
            
             SearchButtonClick = ReactiveCommand.Create(SearchingItems);
             _selectedTabItem = 0;
+            IsCalculationHistory = _selectedTabItem != 2;
             AddRecordClick = ReactiveCommand.Create<int>(OpenOneRecordView);
             DeleteRecordClick = ReactiveCommand.CreateFromTask<int>(async (id) => { DeleteRecord(id); });
             UpdateRecordClick = ReactiveCommand.Create<int>(OpenOneRecordView);
@@ -69,6 +75,11 @@ public class MainAdminViewModel : ViewModelBase
         }
 
 
+    }
+
+    void IsVisibleAddButton(int selectedTabItem)
+    {
+        _isCalculationHistory = IsCalculationHistory = selectedTabItem != 2 && selectedTabItem != 4;
     }
 
     public bool IsAdmin { get; }
@@ -104,8 +115,13 @@ public class MainAdminViewModel : ViewModelBase
     public int SelectedTabItem
     {
         get => _selectedTabItem;
-        set => this.RaiseAndSetIfChanged(ref _selectedTabItem, value);
+        set
+        {
+            IsCalculationHistory = _selectedTabItem != 2 && _selectedTabItem != 4;
+            this.RaiseAndSetIfChanged(ref _selectedTabItem, value);
+        }
     }
+
     public ReactiveCommand<int, Unit> UpdateRecordClick { get; }
     public ReactiveCommand<int, Unit> DeleteRecordClick { get; }
     
@@ -113,8 +129,14 @@ public class MainAdminViewModel : ViewModelBase
 
     public ReactiveCommand<Unit, Unit> ExitFromApplication { get; }
 
-    public ReactiveCommand<int, Unit> AddRecordClick { get; } 
-    
+    public ReactiveCommand<int, Unit> AddRecordClick { get; }
+
+    public bool IsCalculationHistory
+    {
+        get => _isCalculationHistory; 
+        set => this.RaiseAndSetIfChanged(ref _isCalculationHistory, value);
+    }
+
     async void DeleteRecord(int id)
     {
         var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение",

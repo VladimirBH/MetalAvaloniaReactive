@@ -258,7 +258,7 @@
         </TabControl>
         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" >
             <Grid ColumnDefinitions="4*, 1*, 1*">
-                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить" IsVisible="{Binding IsAdmin}">
+                <Button Classes="AddExit" Grid.Column="1" Command="{Binding AddRecordClick}" Content="Добавить" IsVisible="{Binding IsCalculationHistory}">
                     <Button.CommandParameter>
                         <sys:Int32>-1</sys:Int32>
                     </Button.CommandParameter>
