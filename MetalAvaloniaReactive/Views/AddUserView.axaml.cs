@@ -1,6 +1,6 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using ReactiveUI.Validation.Extensions;
 
 namespace MetalAvaloniaReactive.Views;
 

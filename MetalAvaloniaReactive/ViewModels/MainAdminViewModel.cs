@@ -5,11 +5,13 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Interfaces;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
+using NodaTime.Extensions;
 using ReactiveUI;
 using WebServer.Classes;
 using WebServer.DataAccess.Implementations.Entities;
@@ -26,8 +28,45 @@ public class MainAdminViewModel : ViewModelBase
     private ObservableCollection<CalculationHistory> _calculationHistories;
     private ObservableCollection<Furnace> _furnaces;
     private bool _isCalculationHistory;
+    private Furnace _selectedFurnace;
+    private decimal _ag;
+    private decimal _al;
+    private decimal _au;
+    private decimal _ca;
+    private decimal _cr;
+    private decimal _cu;
+    private decimal _fe;
+    private decimal _ni;
+    private decimal _pb;
+    private decimal _si;
+    private decimal _sn;
+    private decimal _zn;
     public MainAdminViewModel(MainWindowViewModel mainWindowViewModel, bool isAdmin)
     {
+        /*var addEnabled = this.WhenAnyValue(
+            ag => ag.Ag,
+            al => al.Al,
+            au => au.Au,
+            ca => ca.Ca,
+            cr => cr.Cr,
+            cu => cu.Cu,
+            fe => fe.Fe,
+            ni => ni.Ni,
+            pb => pb.Pb,
+            si => si.Si,
+            sn => sn.Sn,
+            zn => zn.Zn,
+            (ag, al, au, ca, 
+                    cr, cu, fe ,ni, 
+                    pg, si, sn, zn) => 
+                decimal.TryParse(ag, out decimal number) &&
+                !string.IsNullOrWhiteSpace(ag) &&
+                !string.IsNullOrWhiteSpace(login) &&
+                !string.IsNullOrWhiteSpace(password) &&
+                !string.IsNullOrWhiteSpace(phoneNumber) &&
+                selectedRole != null &&
+                login.Length > 3 &&
+                password.Length > 8);*/
         _mainWindowViewModel = mainWindowViewModel;
         IsAdmin = isAdmin;
         ExitFromApplication = ReactiveCommand.CreateFromTask(async () =>
@@ -58,8 +97,11 @@ public class MainAdminViewModel : ViewModelBase
             _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result);
             _calculationHistories = CalculationHistories = new ObservableCollection<CalculationHistory>(CalculationHistoryImplementation.GetAllHistoryRecords().Result.
                 OrderBy(x => x.CreationDate));
-            
-           
+            CaclButtonClick = ReactiveCommand.CreateFromTask(() =>
+            {
+                CompositionCalculation();
+                return Task.CompletedTask;
+            });
             SearchButtonClick = ReactiveCommand.Create(SearchingItems);
             _selectedTabItem = 0;
             IsCalculationHistory = _selectedTabItem != 2;
@@ -130,6 +172,87 @@ public class MainAdminViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ExitFromApplication { get; }
 
     public ReactiveCommand<int, Unit> AddRecordClick { get; }
+
+    public ReactiveCommand<Unit, Unit> CaclButtonClick { get; }
+
+    public Furnace SelectedFurnace
+    {
+        get => _selectedFurnace;
+        set => this.RaiseAndSetIfChanged(ref _selectedFurnace, value);
+    }
+
+    public decimal Ag
+    {
+        get => _ag;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Al
+    {
+        get => _al;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Au
+    {
+        get => _au;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Ca
+    {
+        get => _ca;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Cr
+    {
+        get => _cr;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Cu
+    {
+        get => _cu;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Fe
+    {
+        get => _fe;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Ni
+    {
+        get => _ni;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Pb
+    {
+        get => _pb;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Si
+    {
+        get => _si;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Sn
+    {
+        get => _sn;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+        
+    public decimal Zn
+    {
+        get => _zn;
+        set => this.RaiseAndSetIfChanged(ref _ag, value);
+    }
+
 
     public bool IsCalculationHistory
     {
@@ -214,5 +337,44 @@ public class MainAdminViewModel : ViewModelBase
     {
         _users = new ObservableCollection<User>(Users.Where(u => u.Login.ToLower().Contains(_search)));
         this.RaisePropertyChanged();
+    }
+
+    async void CompositionCalculation()
+    {
+        var user = UserImplementation.GetCurrentUserInfo();
+        try
+        {
+            await user;
+            CalculationHistory calculationHistory = new CalculationHistory
+            {
+                Ag = Ag,
+                Al = Al,
+                Au = Au,
+                Ca = Ca,
+                Cr = Cr,
+                Cu = Cu,
+                Fe = Fe,
+                Ni = Ni,
+                Pb = Pb,
+                Si = Si,
+                Sn = Sn,
+                Zn = Zn,
+                FurnaceId = SelectedFurnace.Id,
+                UserId = user.Result.Id,
+                CreationDate = DateTime.Now.ToUniversalTime().ToInstant().ToDateTimeOffset()
+            };
+            await CalculationHistoryImplementation.AddCalculationHistory(calculationHistory);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.
+                GetMessageBoxStandardWindow("Успех", $"Скоро здесь будет результат подсчета {Ag}\t", ButtonEnum.Ok, Icon.Info);
+            messageBox.Show();
+        }
+        catch (AggregateException ex)
+        {
+            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
+                "Отсутствует подключение к серверу\t", ButtonEnum.Ok, Icon.Error);
+            messageBoxError.Show();
+        }
+
+
     }
 }

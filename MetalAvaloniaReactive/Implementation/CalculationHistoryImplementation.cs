@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Security.Authentication;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
 using WebServer.Classes;
@@ -36,5 +38,25 @@ public static class CalculationHistoryImplementation
 
         throw new JsonException("Произошла ошибка");
 
+    }
+    
+    public static async Task AddCalculationHistory(CalculationHistory calculationHistory)
+    {
+        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        {
+            TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
+            PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
+            PreparedLocalStorage.SaveLocalStorage();
+        }
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
+        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        options.Converters.Add(new JsonStringEnumConverter());
+        var taskResponse = httpClient.PostAsJsonAsync(UrlAddress.MainUrl + "/CalculationHistory/Create", calculationHistory, options);
+        var response = taskResponse.Result;
+        if (response.StatusCode != HttpStatusCode.OK)
+        {
+            throw new AuthenticationException(response.ToString());
+        }
     }
 }

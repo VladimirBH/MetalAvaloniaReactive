@@ -34,6 +34,10 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Margin" Value="15, 0"/>
     </Style>
+    <Style Selector="TextBox.Calc">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
     <!-- ################################### -->
     <!-- ######### TextBlock Style ######### -->
     <!-- ################################### -->
@@ -47,14 +51,19 @@
         <Setter Property="FontSize" Value="34"/>
     </Style>
     <Style Selector="TextBlock.Authorization">
-        <Setter Property="Margin" Value="0, 0"/>
+        <Setter Property="Margin" Value="0"/>
     </Style>
     <Style Selector="TextBlock.ForAdd">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Right"/>
     </Style>
-    <Style Selector="TextBlock.TextBlockNamePropetry">
+    <Style Selector="TextBlock.TextBlockNameProperty">
         <Setter Property="FontWeight" Value="Medium"/>
+    </Style>
+    <Style Selector="TextBlock.Calc">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Margin" Value="0, 0,10,0"/>
     </Style>
     <!-- ################################### -->
     <!-- ########## Button Style ########### -->

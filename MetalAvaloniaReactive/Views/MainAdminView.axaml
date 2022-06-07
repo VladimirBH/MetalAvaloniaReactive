@@ -33,25 +33,25 @@
                                         </Border>
                                         <Grid Grid.Column="1" RowDefinitions="1*, 1*, 1*">
                                             <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Фамилия"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Фамилия"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Surname}"/>
                                             </Grid>
                                             <Grid Classes="ListView" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Имя"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Имя"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Name}"/>
                                             </Grid>
                                             <Grid Classes="ListView" Grid.Row="2" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Отчество"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Отчество"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Patronymic}"/>
                                             </Grid>
                                         </Grid>
                                         <Grid Grid.Column="2" RowDefinitions="1*, 1*, 1*, 1*">
                                             <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Логин"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Логин"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Login}"/>
                                             </Grid>
                                             <Grid Classes="ListView" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Дата рождения"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Дата рождения"/>
                                                 <TextBlock Grid.Row="1">
                                                     <TextBlock.Text>
                                                         <MultiBinding StringFormat="{}{0}.{1}.{2}">
@@ -63,14 +63,14 @@
                                                 </TextBlock>
                                             </Grid>
                                             <Grid Classes="ListView" Grid.Row="2" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Телефон"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Телефон"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding PhoneNumber}"/>
                                             </Grid>
                                             
                                         </Grid>
                                         <Grid Grid.Column="3" RowDefinitions="1*, 1*">
                                             <Grid Classes="ListView" Grid.Row="0" RowDefinitions="1*, 1*" VerticalAlignment="Top">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Роль" Margin="0"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Роль" Margin="0"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Role.RoleName}" Margin="0"/>
                                             </Grid>
                                             <Grid Grid.Row="1" RowDefinitions="1*, 1*" VerticalAlignment="Bottom">
@@ -100,7 +100,7 @@
                                             <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
                                         </Border>
                                         <Grid Grid.Column="1" RowDefinitions="1*, 1*" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                            <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Название"/>
+                                            <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Название"/>
                                             <TextBlock Grid.Row="1" Text="{Binding RoleName}"/>
                                         </Grid>
                                         <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
@@ -130,63 +130,63 @@
                                         </Border>
                                         <Grid Grid.Column="1" ColumnDefinitions="2*, 1*, 1*, 1*, 1*, 1*, 1*" RowDefinitions="1*, 1*, 1*" VerticalAlignment="Center">
                                             <Grid Grid.Column="0" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Пользователь"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Пользователь"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding User.Login}"/>
                                             </Grid>
                                             <Grid Grid.Column="0" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Печь"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Печь"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Furnace.FurnaceName}"/>
                                             </Grid>
                                             <Grid Grid.Column="1" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Ag"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Ag"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Ag}"/>
                                             </Grid>
                                             <Grid Grid.Column="1" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Al"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Al"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Al}"/>
                                             </Grid>
                                             <Grid Grid.Column="2" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Au"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Au"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Au}"/>
                                             </Grid>
                                             <Grid Grid.Column="2" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Ca"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Ca"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Ca}"/>
                                             </Grid>
                                             <Grid Grid.Column="3" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Cr"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Cr"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Cr}"/>
                                             </Grid>
                                             <Grid Grid.Column="3" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Sn"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Sn"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Sn}"/>
                                             </Grid>
                                             <Grid Grid.Column="4" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Cu"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Cu"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Cu}"/>
                                             </Grid>
                                             <Grid Grid.Column="4" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Fe"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Fe"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Fe}"/>
                                             </Grid>
                                             <Grid Grid.Column="5" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Ni"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Ni"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Ni}"/>
                                             </Grid>
                                             <Grid Grid.Column="5" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Pb"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Pb"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Pb}"/>
                                             </Grid>
                                             <Grid Grid.Column="6" Grid.Row="0" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Si"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Si"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Si}"/>
                                             </Grid>
                                             <Grid Grid.Column="6" Grid.Row="1" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Zn"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Zn"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding Zn}"/>
                                             </Grid>
                                             <Grid Grid.ColumnSpan="7" Grid.Row="2" RowDefinitions="1*, 1*">
-                                                <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Дата расчета"/>
+                                                <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Дата расчета"/>
                                                 <TextBlock Grid.Row="1" Text="{Binding CreationDate}"/>
                                             </Grid>
                                         </Grid>
@@ -212,7 +212,7 @@
                                             <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
                                         </Border>
                                         <Grid Grid.Column="1" RowDefinitions="1*, 1*" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                            <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Название"/>
+                                            <TextBlock Classes="TextBlockNameProperty" Grid.Row="0" Text="Название"/>
                                             <TextBlock Grid.Row="1" Text="{Binding FurnaceName}"/>
                                         </Grid>
                                         <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
@@ -227,33 +227,71 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Расчет" VerticalContentAlignment="Center">
-                <ScrollViewer>
-                    <ItemsControl Items="{Binding Furnaces}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Classes="ListView">
-                                    <Grid ColumnDefinitions="2*, 4*, 4*">
-                                        <Border Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                                                Background="#a8d7f3"
-                                                BorderThickness="0"
-                                                CornerRadius="10"
-                                                Margin="10">
-                                            <TextBlock FontWeight="Bold" Text="{Binding Id}" Padding="0, 5"/>
-                                        </Border>
-                                        <Grid Grid.Column="1" RowDefinitions="1*, 1*" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                            <TextBlock Classes="TextBlockNamePropetry" Grid.Row="0" Text="Название"/>
-                                            <TextBlock Grid.Row="1" Text="{Binding FurnaceName}"/>
-                                        </Grid>
-                                        <Grid Grid.Column="2" ColumnDefinitions="1*, 1*" VerticalAlignment="Stretch" HorizontalAlignment="Right">
-                                            <Button Classes="ListView Update" Grid.Column="0" Command="{Binding DataContext.UpdateRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Изменить"/>
-                                            <Button Classes="ListView Delete" Grid.Column="1" Command="{Binding DataContext.DeleteRecordClick, ElementName=MainAdminUserControl}" CommandParameter="{Binding Id}" Content="Удалить"/>
-                                        </Grid>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
+                <Border Classes="ListView">
+                    <ScrollViewer>
+                        <Grid RowDefinitions="1*, 1*, 1*, 1*" ColumnDefinitions="5*, 5*, 5*, 7*">
+                            <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Ag(г/т):"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Ag}"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Au(г/т):"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Au}"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Al:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Al}"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Ca:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Ca}"/>
+                            </Grid>
+                            <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Cr:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Cr}"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Cu:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Cu}"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Fe:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Fe}"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Ni:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Ni}"/>
+                            </Grid>
+                            <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Pb:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Pb}"/>
+                            </Grid>
+                            <Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Si:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Si}"/>
+                            </Grid>
+                            <Grid Grid.Row="2" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Sn:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Sn}"/>
+                            </Grid>
+                            <Grid Grid.Row="3" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Zn:"/>
+                                <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Zn}"/>
+                            </Grid>
+                            <Grid Grid.Row="0" Grid.Column="3" ColumnDefinitions="1*, 2*">
+                                <TextBlock Classes="Calc" Grid.Column="0" Text="Печь:"/>
+                                <ComboBox Classes="ForAdd" Grid.Column="1" Items="{Binding Furnaces}" SelectedItem="{Binding SelectedFurnace}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding FurnaceName}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </Grid>
+                            <Button Grid.Row="3" Grid.Column="3" Content="Расчитать" HorizontalAlignment="Right" Width="150" Margin="0" Command="{Binding CaclButtonClick}"/>
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
             </TabItem>
         </TabControl>
         <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto" >

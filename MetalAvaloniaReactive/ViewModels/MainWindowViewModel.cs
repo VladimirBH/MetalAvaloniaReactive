@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace MetalAvaloniaReactive.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        public ViewModelActivator Activator { get; }
         private ViewModelBase content;
         public MainWindowViewModel()
         {

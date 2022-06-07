@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using NodaTime.Extensions;
 using ReactiveUI;
+//using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Extensions;
 
 namespace MetalAvaloniaReactive.ViewModels;
 
 public class AddUserViewModel : ViewModelBase
 {
-    private MainWindowViewModel _mainWindowViewModel;
+    private readonly MainWindowViewModel _mainWindowViewModel;
     private string _surname;
     private string _name;
     private string _patronymic;
@@ -24,7 +27,7 @@ public class AddUserViewModel : ViewModelBase
     private DateTime _dateBirth;
     private int _roleId;
     private Role _selectedRole;
-    private User _user;
+    private readonly User _user;
     private string ForPassword;
 
     private List<Role> _roles;
@@ -62,20 +65,30 @@ public class AddUserViewModel : ViewModelBase
             _phoneNumber = _user.PhoneNumber;
             _roleId = _user.RoleId;
             ForPassword = _user.Password;
-            ActionForSubmitButton = ReactiveCommand.CreateFromTask(async () =>
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
                 UpdateUser();
-            });
+                return Task.CompletedTask;
+            }, addEnabled);
             ContentForSubmitButton = "Изменить";
             TitleContent = "Изменение данных";
-            _selectedRole = Roles.FirstOrDefault(x => x.Id == _roleId);
+            _selectedRole = _roles.FirstOrDefault(x => x.Id == _roleId);
         }
         else
         {
-            ActionForSubmitButton = ReactiveCommand.CreateFromTask( async () =>
+            _surname = string.Empty;
+            _name = string.Empty;
+            _patronymic = string.Empty;
+            _login = string.Empty;
+            _dateBirth = DateTime.Now;
+            _phoneNumber = string.Empty;
+            _roleId = -1;
+            ForPassword = string.Empty;
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
                 AddUser();
-            }, addEnabled);
+                return Task.CompletedTask;
+            });
             ContentForSubmitButton = "Добавить";
             TitleContent = "Добавление пользователя";
             _selectedRole = null;
@@ -87,43 +100,55 @@ public class AddUserViewModel : ViewModelBase
     public string ContentForSubmitButton { get; }
     public string TitleContent { get; }
 
+
     public string Surname
     {
         get => _surname;
         set => this.RaiseAndSetIfChanged(ref _surname, value);
     }
 
+
     public string Name
     {
         get => _name;
         set => this.RaiseAndSetIfChanged(ref _name, value);
     }
+    
     public string Patronymic
     {
         get => _patronymic;
         set => this.RaiseAndSetIfChanged(ref _patronymic, value);
     }
+    
+
     public string PhoneNumber
     {
         get => _phoneNumber;
         set => this.RaiseAndSetIfChanged(ref _phoneNumber, value);
     }
     
+    
     public int RoleId
     {
         get => _roleId;
         set => this.RaiseAndSetIfChanged(ref _roleId, value);
     }
+    
+
     public string Login
     {
         get => _login;
         set => this.RaiseAndSetIfChanged(ref _login, value);
     }
+    
+
     public string Password
     {
         get => _password;
         set => this.RaiseAndSetIfChanged(ref _password, value);
     }
+    
+
     public DateTime DateBirth
     {
         get => _dateBirth;
@@ -136,6 +161,7 @@ public class AddUserViewModel : ViewModelBase
         get => _roles;
         set => this.RaiseAndSetIfChanged(ref _roles, value);
     }
+    
     void CancellationOperation()
     {
         _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel, true);
@@ -211,6 +237,11 @@ public class AddUserViewModel : ViewModelBase
             var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
             messageBox.Show();
         }
+    }
+
+    bool GetByLogin(string? login)
+    {
+        return UserImplementation.GetAllUsers().Result.Any(u => u.Login == login);
     }
 
 

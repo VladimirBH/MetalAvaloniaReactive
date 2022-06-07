@@ -87,8 +87,8 @@ public static class UserImplementation
             PreparedLocalStorage.SaveLocalStorage();
         }
         var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
-        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/User/GetCurrentUserInfo");
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", PreparedLocalStorage.GetTokenPairFromLocalStorage().AccessToken);
+        var taskResponse = httpClient.GetAsync(UrlAddress.MainUrl + "/user/getcurrentuserinfo");
         var response = taskResponse.Result;
         if (response.StatusCode != HttpStatusCode.OK) throw new AuthenticationException("Ошибка доступа");
         var text = await response.Content.ReadAsStringAsync();
