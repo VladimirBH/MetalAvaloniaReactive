@@ -10,8 +10,6 @@ using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using NodaTime.Extensions;
 using ReactiveUI;
-//using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Extensions;
 
 namespace MetalAvaloniaReactive.ViewModels;
 
@@ -34,7 +32,7 @@ public class AddUserViewModel : ViewModelBase
 
     public AddUserViewModel(MainWindowViewModel mainWindowViewModel, int idUser)
     {
-        var addEnabled = this.WhenAnyValue(
+        /*var addEnabled = this.WhenAnyValue(
             surname => surname.Surname,
             name => name.Name,
             login => login.Login,
@@ -50,6 +48,7 @@ public class AddUserViewModel : ViewModelBase
                                                                         selectedRole != null &&
                                                                         login.Length > 3 &&
                                                                         password.Length > 8);
+                                                                        */
         _mainWindowViewModel = mainWindowViewModel;
         CancelButtonClick = ReactiveCommand.Create(CancellationOperation);
         _roles = RoleImplementation.GetAllRoles().Result;
@@ -69,7 +68,7 @@ public class AddUserViewModel : ViewModelBase
             {
                 UpdateUser();
                 return Task.CompletedTask;
-            }, addEnabled);
+            });
             ContentForSubmitButton = "Изменить";
             TitleContent = "Изменение данных";
             _selectedRole = _roles.FirstOrDefault(x => x.Id == _roleId);

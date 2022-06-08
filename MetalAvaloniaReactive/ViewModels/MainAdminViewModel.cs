@@ -1,13 +1,11 @@
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using AvaloniaClientMetal.Models;
-using AvaloniaClientMVVM.Interfaces;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
@@ -43,30 +41,6 @@ public class MainAdminViewModel : ViewModelBase
     private decimal _zn;
     public MainAdminViewModel(MainWindowViewModel mainWindowViewModel, bool isAdmin)
     {
-        /*var addEnabled = this.WhenAnyValue(
-            ag => ag.Ag,
-            al => al.Al,
-            au => au.Au,
-            ca => ca.Ca,
-            cr => cr.Cr,
-            cu => cu.Cu,
-            fe => fe.Fe,
-            ni => ni.Ni,
-            pb => pb.Pb,
-            si => si.Si,
-            sn => sn.Sn,
-            zn => zn.Zn,
-            (ag, al, au, ca, 
-                    cr, cu, fe ,ni, 
-                    pg, si, sn, zn) => 
-                decimal.TryParse(ag, out decimal number) &&
-                !string.IsNullOrWhiteSpace(ag) &&
-                !string.IsNullOrWhiteSpace(login) &&
-                !string.IsNullOrWhiteSpace(password) &&
-                !string.IsNullOrWhiteSpace(phoneNumber) &&
-                selectedRole != null &&
-                login.Length > 3 &&
-                password.Length > 8);*/
         _mainWindowViewModel = mainWindowViewModel;
         IsAdmin = isAdmin;
         ExitFromApplication = ReactiveCommand.CreateFromTask(async () =>

@@ -1,27 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using MetalAvaloniaReactive.ViewModels;
 using AvaloniaClientMetal.Models;
-using AvaloniaClientMVVM.Models;
-using MessageBox.Avalonia.Enums;
-using MetalAvaloniaReactive.Models;
-using MetalAvaloniaReactive.Views;
 using ReactiveUI;
 
 namespace MetalAvaloniaReactive.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public ViewModelActivator Activator { get; }
         private ViewModelBase content;
+        
         public MainWindowViewModel()
         {
+            
             try
             {
                 LoadingApplication();
@@ -55,14 +44,6 @@ namespace MetalAvaloniaReactive.ViewModels
             var tokenPair1 = UserImplementation.RefreshTokenPair(tokenPair.RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair1.Result);
             KeepRoleId.RoleId = tokenPair1.Result.IdRole;
-            /*try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException();
-            }*/
         }
     }
 }

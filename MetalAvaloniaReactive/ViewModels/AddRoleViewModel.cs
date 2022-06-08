@@ -1,13 +1,11 @@
 using System;
 using System.Reactive;
 using System.Security.Authentication;
-using AvaloniaClientMetal.Models;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using NodaTime.Extensions;
 using ReactiveUI;
-
 namespace MetalAvaloniaReactive.ViewModels;
 
 public class AddRoleViewModel : ViewModelBase
