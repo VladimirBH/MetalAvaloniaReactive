@@ -163,7 +163,7 @@ public class AddUserViewModel : ViewModelBase
     
     void CancellationOperation()
     {
-        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel, true);
+        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
     }
 
     public Role SelectedRole

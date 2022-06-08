@@ -4,5 +4,76 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MetalAvaloniaReactive.Views.MainUserView">
-    Welcome to Avalonia!
+    <Border Classes="ListView">
+        <ScrollViewer>
+            <Grid RowDefinitions="10*, 1*">
+                <Grid RowDefinitions="1*, 1*, 1*, 1*" ColumnDefinitions="5*, 5*, 5*, 7*">
+                <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Ag(г/т):"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Ag}"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Au(г/т):"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Au}"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Al:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Al}"/>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="0" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Ca:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Ca}"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Cr:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Cr}"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Cu:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Cu}"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Fe:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Fe}"/>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Ni:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Ni}"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Pb:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Pb}"/>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Si:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Si}"/>
+                </Grid>
+                <Grid Grid.Row="2" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Sn:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Sn}"/>
+                </Grid>
+                <Grid Grid.Row="3" Grid.Column="2" ColumnDefinitions="1*, 1*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Zn:"/>
+                    <TextBox Classes="Calc" Grid.Column="1" Text="{Binding Zn}"/>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="3" ColumnDefinitions="1*, 2*">
+                    <TextBlock Classes="Calc" Grid.Column="0" Text="Печь:"/>
+                    <ComboBox Classes="ForAdd" Grid.Column="1" Items="{Binding Furnaces}" SelectedItem="{Binding SelectedFurnace}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FurnaceName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                <Button Grid.Row="3" Grid.Column="3" Content="Расчитать" HorizontalAlignment="Right" Width="150" Margin="0" Command="{Binding CaclButtonClick}"/>
+            </Grid>
+            <Button Grid.Row="1" Classes="Delete AddExit" Content="Выйти">
+                <Button.Command>
+                    <Binding Path="ExitFromApplication" />
+                </Button.Command>
+            </Button>
+            </Grid>
+        </ScrollViewer>
+    </Border>
 </UserControl>

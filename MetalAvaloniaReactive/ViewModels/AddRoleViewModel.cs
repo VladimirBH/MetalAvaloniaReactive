@@ -65,7 +65,7 @@ public class AddRoleViewModel : ViewModelBase
     
     void CancellationOperation()
     {
-        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel, true);
+        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
     }
     
     async void AddRole()

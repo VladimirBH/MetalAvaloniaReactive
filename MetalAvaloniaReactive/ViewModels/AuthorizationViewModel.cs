@@ -28,8 +28,14 @@ public class AuthorizationViewModel : ViewModelBase
                     await tokenPair;
                     PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair.Result);
                     KeepRoleId.RoleId = tokenPair.Result.IdRole;
-                    _mainWindowViewModel.Content = new MainAdminViewModel(mainWindowViewModel, KeepRoleId.RoleId == 1);
-
+                    if (KeepRoleId.RoleId == 1)
+                    {
+                        _mainWindowViewModel.Content = new MainAdminViewModel(mainWindowViewModel);
+                    }
+                    else
+                    {
+                        _mainWindowViewModel.Content = new MainUserViewModel(mainWindowViewModel);
+                    }
                 }
                 catch (AuthenticationException ex)
                 {

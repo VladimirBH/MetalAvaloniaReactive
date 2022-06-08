@@ -39,10 +39,9 @@ public class MainAdminViewModel : ViewModelBase
     private decimal _si;
     private decimal _sn;
     private decimal _zn;
-    public MainAdminViewModel(MainWindowViewModel mainWindowViewModel, bool isAdmin)
+    public MainAdminViewModel(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        IsAdmin = isAdmin;
         ExitFromApplication = ReactiveCommand.CreateFromTask(async () =>
         {
             var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение",
@@ -55,7 +54,6 @@ public class MainAdminViewModel : ViewModelBase
                 _mainWindowViewModel.Content = new AuthorizationViewModel(_mainWindowViewModel);
             }
         });
-        if (!IsAdmin) return;
         try
         {
             this.WhenAnyValue(x => x.Search)
@@ -98,13 +96,10 @@ public class MainAdminViewModel : ViewModelBase
         _isCalculationHistory = IsCalculationHistory = selectedTabItem != 2 && selectedTabItem != 4;
     }
 
-    public bool IsAdmin { get; }
-
     public string Search
     {
         get => _search;
         set => this.RaiseAndSetIfChanged(ref _search, value);
-
     }
 
     public ObservableCollection<User> Users
@@ -259,7 +254,7 @@ public class MainAdminViewModel : ViewModelBase
                 MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Инфо", "Запись успешно удалена \t",
                     ButtonEnum.Ok, Icon.Info);
             messageBoxInfo.Show();
-            _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel, true);
+            _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
         }
         catch (Exception ex)
         {
@@ -339,7 +334,7 @@ public class MainAdminViewModel : ViewModelBase
             };
             await CalculationHistoryImplementation.AddCalculationHistory(calculationHistory);
             var messageBox = MessageBox.Avalonia.MessageBoxManager.
-                GetMessageBoxStandardWindow("Успех", $"Скоро здесь будет результат подсчета {Ag}\t", ButtonEnum.Ok, Icon.Info);
+                GetMessageBoxStandardWindow("Успех", $"Скоро здесь будет результат подсчета\t", ButtonEnum.Ok, Icon.Info);
             messageBox.Show();
         }
         catch (AggregateException ex)
@@ -348,7 +343,5 @@ public class MainAdminViewModel : ViewModelBase
                 "Отсутствует подключение к серверу\t", ButtonEnum.Ok, Icon.Error);
             messageBoxError.Show();
         }
-
-
     }
 }

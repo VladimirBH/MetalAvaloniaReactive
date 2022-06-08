@@ -1,7 +1,6 @@
 using System;
 using System.Reactive;
 using System.Security.Authentication;
-using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using NodaTime.Extensions;
@@ -13,26 +12,26 @@ namespace MetalAvaloniaReactive.ViewModels;
 public class AddFurnaceViewModel : ViewModelBase
 {
    private MainWindowViewModel _mainWindowViewModel;
-    private int _idRole;
+    private int _idFurnace;
     private string _furnaceName;
     private Furnace _furnace;
     public AddFurnaceViewModel(MainWindowViewModel mainWindowViewModel, int idRole)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        _idRole = idRole;
+        _idFurnace = idRole;
         var addEnabled = this.WhenAnyValue(
             x => x.FurnaceName,
             (x) => !string.IsNullOrWhiteSpace(x));
         _mainWindowViewModel = mainWindowViewModel;
         CancelButtonClick = ReactiveCommand.Create(CancellationOperation);
         
-        if (_idRole != -1)
+        if (_idFurnace != -1)
         {
-            Furnace = FurnaceImplementation.GetFurnaceById(_idRole).Result;
+            Furnace = FurnaceImplementation.GetFurnaceById(_idFurnace).Result;
             FurnaceName = Furnace.FurnaceName;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(async () =>
             {
-                UpdateRole();
+                UpdateFurnace();
             });
             ContentForSubmitButton = "Изменить";
             TitleContent = "Изменение данных";
@@ -41,10 +40,10 @@ public class AddFurnaceViewModel : ViewModelBase
         {
             ActionForSubmitButton = ReactiveCommand.CreateFromTask( async () =>
             {
-                AddRole();
+                АddFurnace();
             }, addEnabled);
             ContentForSubmitButton = "Добавить";
-            TitleContent = "Добавление роли";
+            TitleContent = "Добавление печи";
         }
     }
 
@@ -67,18 +66,18 @@ public class AddFurnaceViewModel : ViewModelBase
     
     void CancellationOperation()
     {
-        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel, true);
+        _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
     }
     
-    async void AddRole()
+    async void АddFurnace()
     {
-        Role role = new Role
+        Furnace furnace = new Furnace
         {
             Id = 2,
-            RoleName = FurnaceName,
+            FurnaceName = FurnaceName,
             CreationDate = DateTime.Now.ToUniversalTime().ToInstant().ToDateTimeOffset()
         };
-        var task = RoleImplementation.AddRole(role);
+        var task = FurnaceImplementation.AddFurnace(furnace);
         try
         {
             await task;
@@ -94,11 +93,11 @@ public class AddFurnaceViewModel : ViewModelBase
     }
     
     
-    async void UpdateRole()
+    async void UpdateFurnace()
     {
         Furnace furnace = new Furnace
         {
-            Id = _idRole,
+            Id = _idFurnace,
             FurnaceName = FurnaceName,
             CreationDate = Furnace.CreationDate,
             UpdatedDate = DateTime.Now.ToUniversalTime().ToInstant().ToDateTimeOffset()

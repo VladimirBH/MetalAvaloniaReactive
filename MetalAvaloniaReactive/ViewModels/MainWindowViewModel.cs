@@ -10,11 +10,18 @@ namespace MetalAvaloniaReactive.ViewModels
         
         public MainWindowViewModel()
         {
-            
             try
             {
                 LoadingApplication();
-                Content = AdminView = new MainAdminViewModel(this, KeepRoleId.RoleId == 1);
+                if (KeepRoleId.RoleId == 1)
+                {
+                    Content = new MainAdminViewModel(this);
+                }
+                else
+                {
+                    Content = new MainUserViewModel(this);
+                }
+
             }
             catch (AggregateException ex)
             {
@@ -22,7 +29,7 @@ namespace MetalAvaloniaReactive.ViewModels
             }
             catch (Exception ex)
             {
-                Content = Authorization = new AuthorizationViewModel(this);
+                Content = new AuthorizationViewModel(this);
             }
 
 
@@ -33,9 +40,6 @@ namespace MetalAvaloniaReactive.ViewModels
             get => content;
             set => this.RaiseAndSetIfChanged(ref content, value);
         }
-        
-        public AuthorizationViewModel Authorization { get; }
-        public MainAdminViewModel AdminView { get; }
 
         private void LoadingApplication()
         {
