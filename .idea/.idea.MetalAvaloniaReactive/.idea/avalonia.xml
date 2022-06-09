@@ -3,24 +3,7 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
-        <entry key="MetalAvaloniaReactive/App.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Styles/LightStyle.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-<<<<<<< HEAD
-        <entry key="MetalAvaloniaReactive/Views/AddFurnaceView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/AddRoleView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
         <entry key="MetalAvaloniaReactive/Views/AddUserView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/AuthorizationView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/ConnectionErrorView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/MainAdminView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/MainUserView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-=======
-        <entry key="MetalAvaloniaReactive/ViewModels/AddRoleViewModel.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/AddRoleView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/AddUserView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/AuthorizationView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
-        <entry key="MetalAvaloniaReactive/Views/MainAdminView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
->>>>>>> bb64723 (what)
-        <entry key="MetalAvaloniaReactive/Views/MainWindow.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
       </map>
     </option>
   </component>

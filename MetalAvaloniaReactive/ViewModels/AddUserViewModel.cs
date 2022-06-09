@@ -66,7 +66,10 @@ public class AddUserViewModel : ViewModelBase
             ForPassword = _user.Password;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
-                UpdateUser();
+                if (ValidatingData())
+                {
+                    UpdateUser();
+                }
                 return Task.CompletedTask;
             });
             ContentForSubmitButton = "Изменить";
@@ -85,7 +88,11 @@ public class AddUserViewModel : ViewModelBase
             ForPassword = string.Empty;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
-                AddUser();
+                ForPassword = Password;
+                if (ValidatingData())
+                {
+                    AddUser();
+                }
                 return Task.CompletedTask;
             });
             ContentForSubmitButton = "Добавить";
@@ -243,5 +250,52 @@ public class AddUserViewModel : ViewModelBase
         return UserImplementation.GetAllUsers().Result.Any(u => u.Login == login);
     }
 
+    bool ValidatingData()
+    {
+        string errorText = "";
+        if (!string.IsNullOrWhiteSpace(Surname) &&
+            !string.IsNullOrWhiteSpace(Name) &&
+            !string.IsNullOrWhiteSpace(PhoneNumber) &&
+            !string.IsNullOrWhiteSpace(Login) &&
+            !string.IsNullOrWhiteSpace(ForPassword))
+        {
+            if (Login.Length > 3)
+            {
+                if (ForPassword.Length > 8)
+                {
+                    if (DateBirth.Year > (DateTime.Now.Year - 100) &&
+                        (DateBirth > DateTime.Now.AddYears(-18)))
+                    {
+                        if (SelectedRole != null)
+                        {
+                            return true;
+                        }
+
+                        {
+                            errorText = "Выберите роль\t";
+                        }
+                    }
+                    {
+                        errorText = "Возраст пользователя не должен быть меньше 18 и больше 100\t";
+                    }
+                }
+
+                {
+                    errorText = "Пароль должен быть длиннее 8-ми символов\t";
+                }
+            }
+
+            {
+                errorText = "Логин должен быть более 3 символов\t";
+            }
+        }
+
+        {
+            errorText = "Заполните все поля\t";
+        }
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", errorText, ButtonEnum.Ok, Icon.Error);
+        messageBox.Show();
+        return false;
+    }
 
 }
