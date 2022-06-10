@@ -22,7 +22,11 @@ public class AuthorizationViewModel : ViewModelBase
             (x, y) => !string.IsNullOrWhiteSpace(x) && !string.IsNullOrWhiteSpace(y));
         AuthorizationButtonClick = ReactiveCommand.CreateFromTask(async () =>
             {
-                var tokenPair = UserImplementation.UserAuthorization(new DataAuth { Login = Login, Password = Password });
+                var tokenPair = UserImplementation.UserAuthorization(new DataAuth 
+                    { 
+                        Login = Login, 
+                        Password = Password 
+                    });
                 try
                 {
                     await tokenPair;
@@ -39,14 +43,20 @@ public class AuthorizationViewModel : ViewModelBase
                 }
                 catch (AuthenticationException ex)
                 {
-                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
-                        ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                        "Ошибка",
+                        ex.Message + "\t", 
+                        ButtonEnum.Ok, 
+                        Icon.Error);
                     messageBox.Show();
                 }
                 catch (Exception ex)
                 {
-                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
-                        "Произошла ошибка\t", ButtonEnum.Ok, Icon.Error);
+                    var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                        "Ошибка",
+                        "Произошла ошибка\t", 
+                        ButtonEnum.Ok, 
+                        Icon.Error);
                     messageBox.Show();
                 }
             }, okEnabled

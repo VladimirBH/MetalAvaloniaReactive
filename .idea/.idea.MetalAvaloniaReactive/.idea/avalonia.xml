@@ -3,7 +3,9 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="MetalAvaloniaReactive/Styles/LightStyle.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
         <entry key="MetalAvaloniaReactive/Views/AddUserView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
+        <entry key="MetalAvaloniaReactive/Views/MainAdminView.axaml" value="MetalAvaloniaReactive/MetalAvaloniaReactive.csproj" />
       </map>
     </option>
   </component>

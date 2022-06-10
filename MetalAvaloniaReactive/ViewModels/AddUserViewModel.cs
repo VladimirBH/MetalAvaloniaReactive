@@ -26,29 +26,13 @@ public class AddUserViewModel : ViewModelBase
     private int _roleId;
     private Role _selectedRole;
     private readonly User _user;
-    private string ForPassword;
+    private string _forPassword;
+    private string _forLogin;
 
     private List<Role> _roles;
 
     public AddUserViewModel(MainWindowViewModel mainWindowViewModel, int idUser)
     {
-        /*var addEnabled = this.WhenAnyValue(
-            surname => surname.Surname,
-            name => name.Name,
-            login => login.Login,
-            password => password.Password,
-            phoneNumber => phoneNumber.PhoneNumber,
-            dateBirth => dateBirth.DateBirth,
-            selectedRole => selectedRole.SelectedRole,
-            (surname, name, login,password, phoneNumber,  dateBirth, selectedRole) => !string.IsNullOrWhiteSpace(surname) &&
-                                                                        !string.IsNullOrWhiteSpace(name) &&
-                                                                        !string.IsNullOrWhiteSpace(login) &&
-                                                                        !string.IsNullOrWhiteSpace(password) &&
-                                                                        !string.IsNullOrWhiteSpace(phoneNumber) &&
-                                                                        selectedRole != null &&
-                                                                        login.Length > 3 &&
-                                                                        password.Length > 8);
-                                                                        */
         _mainWindowViewModel = mainWindowViewModel;
         CancelButtonClick = ReactiveCommand.Create(CancellationOperation);
         _roles = RoleImplementation.GetAllRoles().Result;
@@ -63,7 +47,8 @@ public class AddUserViewModel : ViewModelBase
             _dateBirth = _user.DateBirth;
             _phoneNumber = _user.PhoneNumber;
             _roleId = _user.RoleId;
-            ForPassword = _user.Password;
+            _forPassword = _user.Password;
+            _forLogin = _user.Login;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
                 if (ValidatingData())
@@ -85,10 +70,10 @@ public class AddUserViewModel : ViewModelBase
             _dateBirth = DateTime.Now;
             _phoneNumber = string.Empty;
             _roleId = -1;
-            ForPassword = string.Empty;
+            _forPassword = string.Empty;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
-                ForPassword = Password;
+                _forPassword = Password;
                 if (ValidatingData())
                 {
                     AddUser();
@@ -198,13 +183,21 @@ public class AddUserViewModel : ViewModelBase
         try
         {
             await task;
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Пользователь успешно создан\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Успех", 
+                "Пользователь успешно создан\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
             CancellationOperation();
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                ex.Message + "\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBox.Show();
         }
     }
@@ -214,7 +207,7 @@ public class AddUserViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(Password))
         {
-            ForPassword = BCrypt.Net.BCrypt.HashPassword(Password, 14);
+            _forPassword = BCrypt.Net.BCrypt.HashPassword(Password, 14);
         }
 
         User user = new User
@@ -227,27 +220,35 @@ public class AddUserViewModel : ViewModelBase
             PhoneNumber = PhoneNumber,
             RoleId = SelectedRole.Id,
             Login = Login,
-            Password = ForPassword,
+            Password = _forPassword,
             CreationDate = _user.CreationDate
         };
         var task = UserImplementation.UpdateUser(user);
         try
         {
             await task;
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Данные успешно обновлены\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", 
+                "Данные успешно обновлены\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
             CancellationOperation();
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                ex.Message + "\t", 
+                ButtonEnum.Ok, Icon.Error);
             messageBox.Show();
         }
     }
 
-    bool GetByLogin(string? login)
+    bool GetByLogin(string login)
     {
-        return UserImplementation.GetAllUsers().Result.Any(u => u.Login == login);
+        return string.Equals(login.Trim(), _forLogin.Trim(), StringComparison.CurrentCultureIgnoreCase) || 
+               UserImplementation.GetAllUsers().Result.Any(r => 
+                   string.Equals(r.Login.Trim(), login.Trim(), StringComparison.CurrentCultureIgnoreCase));
     }
 
     bool ValidatingData()
@@ -257,18 +258,22 @@ public class AddUserViewModel : ViewModelBase
             !string.IsNullOrWhiteSpace(Name) &&
             !string.IsNullOrWhiteSpace(PhoneNumber) &&
             !string.IsNullOrWhiteSpace(Login) &&
-            !string.IsNullOrWhiteSpace(ForPassword))
+            !string.IsNullOrWhiteSpace(_forPassword))
         {
             if (Login.Length > 3)
             {
-                if (ForPassword.Length > 8)
+                if (_forPassword.Length > 8)
                 {
                     if (DateBirth.Year > (DateTime.Now.Year - 100) &&
                         (DateBirth > DateTime.Now.AddYears(-18)))
                     {
                         if (SelectedRole != null)
                         {
-                            return true;
+                            if (!GetByLogin(Login)) return true;
+
+                            {
+                                errorText = "Этот логин уже занят";
+                            }
                         }
 
                         {
@@ -293,7 +298,11 @@ public class AddUserViewModel : ViewModelBase
         {
             errorText = "Заполните все поля\t";
         }
-        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", errorText, ButtonEnum.Ok, Icon.Error);
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+            "Ошибка", 
+            errorText, 
+            ButtonEnum.Ok, 
+            Icon.Error);
         messageBox.Show();
         return false;
     }

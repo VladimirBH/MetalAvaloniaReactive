@@ -44,8 +44,11 @@ public class MainAdminViewModel : ViewModelBase
         _mainWindowViewModel = mainWindowViewModel;
         ExitFromApplication = ReactiveCommand.CreateFromTask(async () =>
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение",
-                "Вы уверены, что хотите выйти?", ButtonEnum.YesNo, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Предупреждение",
+                "Вы уверены, что хотите выйти?", 
+                ButtonEnum.YesNo, 
+                Icon.Info);
             var messageBoxResult = await messageBox.Show();
             if (messageBoxResult == ButtonResult.Yes)
             {
@@ -64,11 +67,17 @@ public class MainAdminViewModel : ViewModelBase
                 .Throttle(TimeSpan.FromMilliseconds(10))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(IsVisibleAddButton);
+            
             _users = Users = new ObservableCollection<User>(UserImplementation.GetAllUsers().Result.OrderBy(u => u.Id));
+            
             _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.OrderBy(r => r.Id));
+            
             _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result);
-            _calculationHistories = CalculationHistories = new ObservableCollection<CalculationHistory>(CalculationHistoryImplementation.GetAllHistoryRecords().Result.
-                OrderBy(x => x.CreationDate));
+            
+            _calculationHistories = CalculationHistories = new ObservableCollection<CalculationHistory>(
+                CalculationHistoryImplementation.GetAllHistoryRecords().
+                Result.OrderBy(x => x.CreationDate));
+            
             CaclButtonClick = ReactiveCommand.CreateFromTask(() =>
             {
                 CompositionCalculation();
@@ -83,8 +92,11 @@ public class MainAdminViewModel : ViewModelBase
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow
-                ("Ошибка", "ex.Message", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                    "ex.Message", 
+                    ButtonEnum.Ok, 
+                    Icon.Error);
             messageBox.Show();
         }
 
@@ -231,9 +243,13 @@ public class MainAdminViewModel : ViewModelBase
 
     async void DeleteRecord(int id)
     {
-        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Предупреждение",
-            "Вы уверены, что хотите удалить запись?", ButtonEnum.YesNo, Icon.Warning);
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+            "Предупреждение",
+            "Вы уверены, что хотите удалить запись?", 
+            ButtonEnum.YesNo, 
+            Icon.Warning);
         var messageBoxResult = await messageBox.Show();
+        
         if (messageBoxResult == ButtonResult.No) return;
         try
         {
@@ -251,15 +267,21 @@ public class MainAdminViewModel : ViewModelBase
             }
 
             var messageBoxInfo =
-                MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Инфо", "Запись успешно удалена \t",
-                    ButtonEnum.Ok, Icon.Info);
+                MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                    "Инфо", 
+                    "Запись успешно удалена \t",
+                    ButtonEnum.Ok, 
+                    Icon.Info);
             messageBoxInfo.Show();
             _mainWindowViewModel.Content = new MainAdminViewModel(_mainWindowViewModel);
         }
         catch (Exception ex)
         {
-            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
-                "Не удалось повторить действие, возможно у элемента есть зависимые записи\t", ButtonEnum.Ok, Icon.Error);
+            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка",
+                "Не удалось повторить действие, возможно у элемента есть зависимые записи\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBoxError.Show();
         }
     }
@@ -293,10 +315,18 @@ public class MainAdminViewModel : ViewModelBase
                                 u.Id.ToString() == s));
                 break;
             case 1:
-                _roles = Roles = new ObservableCollection<Role>(RoleImplementation.GetAllRoles().Result.Where(r => r.RoleName.Trim().ToLower().Contains(s.Trim().ToLower())));
+                _roles = Roles = new ObservableCollection<Role>(
+                    RoleImplementation.
+                        GetAllRoles().
+                        Result.
+                        Where(r => r.RoleName.Trim().ToLower().Contains(s.Trim().ToLower())));
                 break;
             case 3:
-                _furnaces = Furnaces = new ObservableCollection<Furnace>(FurnaceImplementation.GetAllFurnaces().Result.Where(r => r.FurnaceName.Trim().ToLower().Contains(s.Trim().ToLower())));
+                _furnaces = Furnaces = new ObservableCollection<Furnace>(
+                    FurnaceImplementation.
+                        GetAllFurnaces().
+                        Result.
+                        Where(r => r.FurnaceName.Trim().ToLower().Contains(s.Trim().ToLower())));
                 break;
         }
 
@@ -333,14 +363,20 @@ public class MainAdminViewModel : ViewModelBase
                 CreationDate = DateTime.Now.ToUniversalTime().ToInstant().ToDateTimeOffset()
             };
             await CalculationHistoryImplementation.AddCalculationHistory(calculationHistory);
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.
-                GetMessageBoxStandardWindow("Успех", $"Скоро здесь будет результат подсчета\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Успех", 
+                "Скоро здесь будет результат подсчета\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
         }
         catch (AggregateException ex)
         {
-            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка",
-                "Отсутствует подключение к серверу\t", ButtonEnum.Ok, Icon.Error);
+            var messageBoxError = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка",
+                "Отсутствует подключение к серверу\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBoxError.Show();
         }
     }

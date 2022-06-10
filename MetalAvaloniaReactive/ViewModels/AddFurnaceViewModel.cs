@@ -1,11 +1,15 @@
 using System;
+using System.Drawing;
+using System.Linq;
 using System.Reactive;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
 using NodaTime.Extensions;
 using ReactiveUI;
 using WebServer.DataAccess.Implementations.Entities;
+using Icon = MessageBox.Avalonia.Enums.Icon;
 
 namespace MetalAvaloniaReactive.ViewModels;
 
@@ -15,6 +19,7 @@ public class AddFurnaceViewModel : ViewModelBase
     private int _idFurnace;
     private string _furnaceName;
     private Furnace _furnace;
+    private string _forFurnaceName;
     public AddFurnaceViewModel(MainWindowViewModel mainWindowViewModel, int idRole)
     {
         _mainWindowViewModel = mainWindowViewModel;
@@ -29,19 +34,29 @@ public class AddFurnaceViewModel : ViewModelBase
         {
             Furnace = FurnaceImplementation.GetFurnaceById(_idFurnace).Result;
             FurnaceName = Furnace.FurnaceName;
-            ActionForSubmitButton = ReactiveCommand.CreateFromTask(async () =>
+            _forFurnaceName = FurnaceName;
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
-                UpdateFurnace();
+                if (ValidatingData())
+                {
+                    UpdateFurnace();
+                }
+                return Task.CompletedTask;
+     
             });
             ContentForSubmitButton = "Изменить";
             TitleContent = "Изменение данных";
         }
         else
         {
-            ActionForSubmitButton = ReactiveCommand.CreateFromTask( async () =>
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask( () =>
             {
-                АddFurnace();
-            }, addEnabled);
+                if (ValidatingData())
+                {
+                    АddFurnace();
+                }
+                return Task.CompletedTask;
+            });
             ContentForSubmitButton = "Добавить";
             TitleContent = "Добавление печи";
         }
@@ -81,13 +96,21 @@ public class AddFurnaceViewModel : ViewModelBase
         try
         {
             await task;
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Печь успешно внесена в базу\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Успех", 
+                "Печь успешно внесена в базу\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
             CancellationOperation();
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                ex.Message + "\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBox.Show();
         }
     }
@@ -106,14 +129,53 @@ public class AddFurnaceViewModel : ViewModelBase
         try
         {
             await task;
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Данные успешно обновлены\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Успех", 
+                "Данные успешно обновлены\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
             CancellationOperation();
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                ex.Message + "\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBox.Show();
         }
+    }
+    
+    bool TryGetByFurnaceName(string furnaceName)
+    {
+        return string.Equals(furnaceName.Trim(), _forFurnaceName.Trim(), StringComparison.CurrentCultureIgnoreCase) ||
+               FurnaceImplementation.GetAllFurnaces().Result.Any(f => 
+                   string.Equals(f.FurnaceName.Trim(), furnaceName.Trim(), StringComparison.CurrentCultureIgnoreCase));
+    }
+
+    bool ValidatingData()
+    {
+        string errorText = "";
+        if (!string.IsNullOrWhiteSpace(FurnaceName))
+        {
+            if (TryGetByFurnaceName(FurnaceName))
+            {
+                errorText = "Такая печь уже существует";
+            }
+            return true;
+        }
+
+        {
+            errorText = "Заполните все поля";
+        }
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+            "Ошибка", 
+            errorText, 
+            ButtonEnum.Ok, 
+            Icon.Error);
+        messageBox.Show();
+        return false;
     }
 }

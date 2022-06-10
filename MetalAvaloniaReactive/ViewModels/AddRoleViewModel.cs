@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Reactive;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using AvaloniaClientMVVM.Models;
 using MessageBox.Avalonia.Enums;
 using MetalAvaloniaReactive.Models;
@@ -14,6 +16,7 @@ public class AddRoleViewModel : ViewModelBase
     private int _idRole;
     private string _roleName;
     private Role _role;
+    private string _forRoleName;
     public AddRoleViewModel(MainWindowViewModel mainWindowViewModel, int idRole)
     {
         _mainWindowViewModel = mainWindowViewModel;
@@ -28,19 +31,29 @@ public class AddRoleViewModel : ViewModelBase
         {
             Role = RoleImplementation.GetRoleById(_idRole).Result;
             RoleName = Role.RoleName;
-            ActionForSubmitButton = ReactiveCommand.CreateFromTask(async () =>
+            _forRoleName = RoleName;
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask( () =>
             {
-                UpdateRole();
+                if (ValidatingData())
+                {
+                    UpdateRole();
+                }
+                return Task.CompletedTask;
             });
             ContentForSubmitButton = "Изменить";
             TitleContent = "Изменение данных";
         }
         else
         {
-            ActionForSubmitButton = ReactiveCommand.CreateFromTask( async () =>
+            ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
-                AddRole();
-            }, addEnabled);
+                if (ValidatingData())
+                {
+                    AddRole();
+                }
+
+                return Task.CompletedTask;
+            });
             ContentForSubmitButton = "Добавить";
             TitleContent = "Добавление роли";
         }
@@ -80,13 +93,21 @@ public class AddRoleViewModel : ViewModelBase
         try
         {
             await task;
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Роль успешно создана\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Успех", 
+                "Роль успешно создана\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
             CancellationOperation();
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                ex.Message + "\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBox.Show();
         }
     }
@@ -105,14 +126,53 @@ public class AddRoleViewModel : ViewModelBase
         try
         {
             await task;
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Успех", "Данные успешно обновлены\t", ButtonEnum.Ok, Icon.Info);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Успех", 
+                "Данные успешно обновлены\t", 
+                ButtonEnum.Ok, 
+                Icon.Info);
             messageBox.Show();
             CancellationOperation();
         }
         catch (AuthenticationException ex)
         {
-            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow("Ошибка", ex.Message + "\t", ButtonEnum.Ok, Icon.Error);
+            var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                "Ошибка", 
+                ex.Message + "\t", 
+                ButtonEnum.Ok, 
+                Icon.Error);
             messageBox.Show();
         }
+    }
+
+    bool TryGetByRoleName(string roleName)
+    {
+        return string.Equals(roleName.Trim(), _forRoleName.Trim(), StringComparison.CurrentCultureIgnoreCase) || 
+               RoleImplementation.GetAllRoles().Result.Any(r => 
+                   string.Equals(r.RoleName.Trim(), roleName.Trim(), StringComparison.CurrentCultureIgnoreCase));
+    }
+
+    bool ValidatingData()
+    {
+        string errorText = "";
+        if (!string.IsNullOrWhiteSpace(RoleName))
+        {
+            if (TryGetByRoleName(RoleName))
+            {
+                errorText = "Такая роль уже существует";
+            }
+            return true;
+        }
+
+        {
+            errorText = "Заполните все поля";
+        }
+        var messageBox = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+            "Ошибка", 
+            errorText, 
+            ButtonEnum.Ok, 
+            Icon.Error);
+        messageBox.Show();
+        return false;
     }
 }
