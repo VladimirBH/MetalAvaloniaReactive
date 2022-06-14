@@ -55,7 +55,7 @@ public static class UserImplementation
 
     public static async Task<List<User>> GetAllUsers()
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -80,7 +80,7 @@ public static class UserImplementation
 
     public static async Task<User> GetCurrentUserInfo()
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -104,7 +104,7 @@ public static class UserImplementation
 
     public static async Task<User> GetUserById(int id)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -129,7 +129,7 @@ public static class UserImplementation
 
     public static async Task AddUser(User user)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -149,7 +149,7 @@ public static class UserImplementation
 
     public static async Task UpdateUser(User user)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -170,7 +170,7 @@ public static class UserImplementation
     
     public static async Task DeleteUser(int id)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);

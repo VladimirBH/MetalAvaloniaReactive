@@ -16,7 +16,7 @@ public static class RoleImplementation
 {
     public static async Task<List<Role>> GetAllRoles()
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -42,7 +42,7 @@ public static class RoleImplementation
     
     public static async Task AddRole(Role role)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -62,7 +62,7 @@ public static class RoleImplementation
 
     public static async Task UpdateRole(Role role)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -83,7 +83,7 @@ public static class RoleImplementation
     
     public static async Task DeleteRole(int id)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -102,7 +102,7 @@ public static class RoleImplementation
     
     public static async Task<Role> GetRoleById(int id)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);

@@ -256,7 +256,20 @@ public class MainAdminViewModel : ViewModelBase
             switch (SelectedTabItem)
             {
                 case 0:
-                    await UserImplementation.DeleteUser(id);
+                    if (UserImplementation.GetCurrentUserInfo().Result.Id != id)
+                    {
+                        await UserImplementation.DeleteUser(id);
+                    }
+                    else
+                    {
+                        var messageBoxErrorId =
+                        MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(
+                            "Ошибка", 
+                            "Вы не можете удалить самого себя \t",
+                            ButtonEnum.Ok, 
+                            Icon.Error);
+                        messageBoxErrorId.Show();
+                    }
                     break;
                 case 1:
                     await RoleImplementation.DeleteRole(id);

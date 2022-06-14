@@ -28,6 +28,7 @@ public class AddUserViewModel : ViewModelBase
     private readonly User _user;
     private string _forPassword;
     private string _forLogin;
+    private string _forPhoneNumber;
 
     private List<Role> _roles;
 
@@ -49,6 +50,7 @@ public class AddUserViewModel : ViewModelBase
             _roleId = _user.RoleId;
             _forPassword = _user.Password;
             _forLogin = _user.Login;
+            _forPhoneNumber = _user.PhoneNumber;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
                 if (ValidatingData())
@@ -71,6 +73,8 @@ public class AddUserViewModel : ViewModelBase
             _phoneNumber = string.Empty;
             _roleId = -1;
             _forPassword = string.Empty;
+            _forPhoneNumber = string.Empty;
+            _forLogin = string.Empty;
             ActionForSubmitButton = ReactiveCommand.CreateFromTask(() =>
             {
                 _forPassword = Password;
@@ -250,6 +254,14 @@ public class AddUserViewModel : ViewModelBase
                UserImplementation.GetAllUsers().Result.Any(r => 
                    string.Equals(r.Login.Trim(), login.Trim(), StringComparison.CurrentCultureIgnoreCase));
     }
+    
+    bool GetByPhoneNumber(string phoneNumber)
+    {
+        return string.Equals(phoneNumber.Trim(), _forPhoneNumber.Trim(), StringComparison.CurrentCultureIgnoreCase) || 
+               UserImplementation.GetAllUsers().Result.Any(r => 
+                   string.Equals(r.PhoneNumber.Trim(), phoneNumber.Trim(), StringComparison.CurrentCultureIgnoreCase));
+    }
+    
 
     bool ValidatingData()
     {
@@ -264,37 +276,42 @@ public class AddUserViewModel : ViewModelBase
             {
                 if (_forPassword.Length > 8)
                 {
-                    if (DateBirth.Year > (DateTime.Now.Year - 100) &&
-                        (DateBirth > DateTime.Now.AddYears(-18)))
+                    if (DateBirth > (DateTime.Now.AddYears(-100)) &&
+                        (DateBirth < DateTime.Now.AddYears(-18)))
                     {
                         if (SelectedRole != null)
                         {
-                            if (!GetByLogin(Login)) return true;
-
+                            if (!GetByLogin(Login))
                             {
-                                errorText = "Этот логин уже занят";
+                                if (!GetByPhoneNumber(PhoneNumber)) return true;
+                                errorText = "Этот номер телефона уже занят \t";
+                            }
+                            else
+                            {
+                                errorText = "Этот логин уже занят \t";
                             }
                         }
-
+                        else
                         {
                             errorText = "Выберите роль\t";
                         }
                     }
+                    else
                     {
                         errorText = "Возраст пользователя не должен быть меньше 18 и больше 100\t";
                     }
                 }
-
+                else
                 {
                     errorText = "Пароль должен быть длиннее 8-ми символов\t";
                 }
             }
-
+            else
             {
                 errorText = "Логин должен быть более 3 символов\t";
             }
         }
-
+        else
         {
             errorText = "Заполните все поля\t";
         }

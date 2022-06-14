@@ -17,7 +17,7 @@ public static class CalculationHistoryImplementation
 {
     public static async Task<List<CalculationHistory>> GetAllHistoryRecords()
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -42,7 +42,7 @@ public static class CalculationHistoryImplementation
     
     public static async Task AddCalculationHistory(CalculationHistory calculationHistory)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);

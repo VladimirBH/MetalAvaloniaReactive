@@ -17,7 +17,7 @@ public static class FurnaceImplementation
 {
     public static async Task<List<Furnace>> GetAllFurnaces()
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -43,7 +43,7 @@ public static class FurnaceImplementation
     
     public static async Task AddFurnace(Furnace furnace)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -63,7 +63,7 @@ public static class FurnaceImplementation
 
     public static async Task UpdateFurnace(Furnace furnace)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -84,7 +84,7 @@ public static class FurnaceImplementation
     
     public static async Task DeleteFurnace(int id)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
@@ -102,7 +102,7 @@ public static class FurnaceImplementation
     
     public static async Task<Furnace> GetFurnaceById(int id)
     {
-        if (!PreparedLocalStorage.CheckValidTokenInLocalStorage())
+        if (PreparedLocalStorage.CheckValidTokenInLocalStorage())
         {
             TokenPair tokenPair = await UserImplementation.RefreshTokenPair(PreparedLocalStorage.GetTokenPairFromLocalStorage().RefreshToken);
             PreparedLocalStorage.PutTokenPairFromLocalStorage(tokenPair);
